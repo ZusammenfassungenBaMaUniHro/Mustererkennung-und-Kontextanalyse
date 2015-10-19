@@ -1,0 +1,1 @@
+# Zusammenfassung-Mustererkennung-und-Kontextanalyse
