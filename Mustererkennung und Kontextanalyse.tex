@@ -1,0 +1,55 @@
+ \documentclass{article} %A4
+\usepackage[a4paper,left=1.9cm, right=2.1cm,top = 1.2cm,bottom=2.3cm]{geometry}
+\usepackage[utf8]{inputenc}%Umlaute
+\usepackage[ngerman]{babel} %Texttrennung
+\usepackage{graphicx}	%Grafiken
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{url}
+\usepackage{listings}
+ \usepackage{color}
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{algpseudocode}
+\usepackage{tikz}
+
+\usepackage[labelformat=empty]{caption}
+\title{Zusammenfassung - Mustererkennung und Kontextanalyse}
+\author{
+	Andreas Ruscheinski
+}
+
+\begin{document}
+\maketitle
+\begin{framed}Korrektheit und Vollständigkeit der Informationen sind nicht gewährleistet.
+Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
+\end{framed}
+\setcounter{tocdepth}{1}
+\tableofcontents
+
+\section{Überblick Klassifikation}
+	\subsection{Einführendes Beispiel}
+	\begin{itemize}
+		\item Ziel: Bestimmung von Fischen auf der Basis von Kamerainformationen
+		\item Verwendung der Kamera zum Merkmale (Features) des aktuellen Fisches zu bestimmen: Länge, Helligkeit, Breite
+		\item Annahme: Die Modelle (Beschreibung) der Fischen unterscheiden sich
+		\item Klassifikation: finde zu gegebene Merkmalen das am besten passende Modell (Welche Beschreibung der Fische passt am besten zu den aktuellen Fisch)
+	\end{itemize}
+	\subsection{Mustererkennungssysteme}
+		\begin{description}
+			\item[1) Sensing:] Erfassung der Umwelt mittels Sensoren, z.B: Kamera, Bewegungssensoren, Mikrophon, RFID-Lesegerät, Problem: Eigenschaften und Begrenzungen (Bandbreite, Auflösung, Empfindlichkeit, Verzerrung, Rauschen, Latenz, \dots)des Sensors beeinflussen Problemschwierigkeit 			
+			\item[2) Segmentation:] Identifikation der einzelnen Musterinstanzen (Identifikation der für unser Problem relevanten Daten), z.B: Fisch aufn Fließband
+			\item[3) Merkmalsberechnung:] Bestimmung von Features, gesucht sind dabei Features welche eine Diskrimierungsfähigkeit haben (Zwischen zwei gleichen Klassen ähnlicher Wert, Zwischen zwei verschiedenen Klassen großer Werteunterschied) und Invariant gegenüber Signaltransformationen (Rotation, Translation, Skalierung, perspektivische Verzerrung) sind; Problem: Wie kann ich aus einer großen Auswahl an Merkmalen die besten geeigneten finden?
+			\item[4) Klassifikation:] Annahme: Modelle (Grundlegende Eigenschaften) der Klassen (verschiedene Fische) unterscheiden sich; Ziel: Zuweisung von Probleminstanzen aufgrund deren Merkmale zu der am besten entsprechenden Klasse			
+			\item[5) Nachbereitung:] Entscheidung auf Basis Klassifikation, Problem: Wie können wir Kontextinformationen nutzen? Können wir verschiedene Klassifikatoren zusammen nutzen? 
+		\end{description}
+	\subsection{Entwurf von Mustererkennungssystemem}
+	\begin{description}
+		\item[1) Daten sammlen:] Wie kann man wissen, wann eine Menge von Daten ausreichend groß und repräsentativ ist, um das Klassifikationssystem zu trainieren und zu testen? 
+		\item[2) Merkmale bestimmen:] Gesucht: Einfach zu extrahierende Merkmale mit hoher Diskriminativität, Invariant gegenüber irrelevanten Transformationen, unempfindlich gegenüber Rauschen, Problem: Wie kann ich A-priori-Wissen nutzen?
+		\item[3) Modell auswählen:] Wie erkennt man, wann ein Modell sich in der Klassifikation signifikant von einem anderen Modell – oder vom wahren Modell – unterscheidet? Wie erkennt man, dass man eine Klasse von Modellen zugunsten eines anderen Ansatzes ablehnen sollte? Versuch-und-Irrtum oder gibt es systematische Methoden?
+		\item[4) Klassifikator trainieren:] Verwende gesammelte Daten, um Parameter des Klassifikators zu bestimmen
+		\item[5) Klassifikator evaluieren:] Wie bewertet man die Leistung? Wie verhindert man Overfitting/Underfitting?
+	\end{description}
+\section{Grundlagen Signalverarbeitung}
+\end{document}
