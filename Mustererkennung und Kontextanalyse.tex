@@ -5,6 +5,7 @@
 \usepackage{graphicx}	%Grafiken
 \usepackage{amssymb}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{url}
 \usepackage{listings}
  \usepackage{color}
@@ -18,6 +19,8 @@
 \author{
 	Andreas Ruscheinski
 }
+\theoremstyle{definition} 
+\newtheorem*{Abtasttheorem}{Abtasttheorem} 
 
 \begin{document}
 \maketitle
@@ -51,5 +54,32 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\item[4) Klassifikator trainieren:] Verwende gesammelte Daten, um Parameter des Klassifikators zu bestimmen
 		\item[5) Klassifikator evaluieren:] Wie bewertet man die Leistung? Wie verhindert man Overfitting/Underfitting?
 	\end{description}
+	Für weitere Informationen sind folgende Referenzen zu konsultieren: \cite[S. 3-16]{dudaPattern}
 \section{Grundlagen Signalverarbeitung}
+	\subsection{Digitalisierung}
+		In diesem werden die Grundlagen der Digitalen Signalverarbeitung beschrieben. In der Digitalen Signalverarbeitung werden Methoden und Techniken behandelt welche aus den anlogen Sensorwerten eine digitale Information erstellen.\\
+		Herkömmliche Sensoren liefen aktuelle Werte anhand von Spannungen (Bsp: Drucksensor: $1g = 0,1V$). Dies analoge Signale werden im ersten Schritt zeitlich diskretisiert d.h. die kontinuierlichen Signale werden durch Abtastung angenährt. Im nächsten Schritt werden die abgetasten Werte diskretisiert (Diskretisierung der Amplituden) d.h. jeden abgetasten Wert wird ein Wert digitaler Wert zugewiesen.\\
+		Unter Abtastung versteht man die erhebung eines Wertes zu einem Zeitpunkt. Die Häufigkeit der Abtastung wird in Herz (Hz) angegeben d.h. Abtastung mit 10 Hz enspricht 10 maliges abstasten des analogen Signales innerhalb von einer Sekunde.\
+		Die Diskretisierung der Amplitude erfolt mittels einem Analog-Digtal-Wandler der entsprechend von Grenzwerten (1/2 Spannung, 1/4 Spannung, 1/8 Spannung) ensprechende Bits setzt und diese Information ausgibt.
+		\subsubsection{Dithering}
+		Ein Problem bei der Diskretisierung der Amplitude ergibt sich dadurch das bei einem sehr geringen Sensorwerte ensprechende Bits nichts gesetzt werden. Dies hat zur Folge das Informationen verloren gehen. Um dies zu verhindern wird Zufallsrauschen auf den aktuellen Sensorwert addiert. Dadurch wird der Grenzwert manchmal überschritten. Dadurch nährt sich der Erwartungswert den Realwert an. 
+		\subsubsection{Abtastung}
+		\begin{Abtasttheorem}
+			Ein Signal nur dann kann korrekt abgetastet werden, wenn es keine
+			Frequenzanteile enthält, die oberhalb der halben Abtastrate liegen.\\
+			$f_{max} \leq \frac{1}{2}f_{sample}$
+		\end{Abtasttheorem}
+		Aus dem Abtasttheorem folgt wenn wir ein Signal mit $f_{max}$ korrent abzutasten müssen wir dieses Signal mit einer Frequenz von $2*f_{max}$ abtasten. 
+	\subsection{Linares System}
+	\begin{itemize}
+		\item $f$ ist linear gdw. $f(c*(a+b)) = c*(f(a) + f(b)$ d.h. wenn f linear ist können wir die Konstante herausziehen und die einzelnen Bestandteile untersuchen
+		\item Homogenität: $f(c*a) = c*f(a)$ d.h. wir können Konstanten aus unseren Berechnungen ausschließen und unser Ergebnis mit der Konstante multiplizieren
+		\item Additivität: $f(a+b) = f(a)+f(b)$ d.h. wir können die zusammengesetzte Argumente von f getrennt betrachten und unsere Teilergebnisse addieren
+	\end{itemize}
+
+
+
+\bibliography{library}
+\bibliographystyle{plain}
+
 \end{document}
