@@ -19,9 +19,7 @@
 \author{
 	Andreas Ruscheinski
 }
-\theoremstyle{definition} 
-\newtheorem*{Abtasttheorem}{Definition: Abtasttheorem} 
-\newtheorem*{Lineares System}{Definition: Lineares System} 
+
 
 \begin{document}
 \maketitle
@@ -57,7 +55,7 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 	\end{description}
 	Für weitere Informationen sind folgende Referenzen zu konsultieren: \cite[S. 3-16]{dudaPattern}
 \section{Grundlagen Signalverarbeitung}
-	In diesem Abschnitt werden die Grundlagen der Digitalen Signalverarbeitung beschrieben. In der Digitalen Signalverarbeitung werden Methoden und Techniken behandelt welche aus  anlogen Sensorwerten eine digitale Information erstellen.\\
+	In diesem Abschnitt werden die Grundlagen der Digitalen Signalverarbeitung beschrieben. In der Digitalen Signalverarbeitung werden Methoden und Techniken behandelt welche aus  anlogen Sensorwerten eine digitale Information erstellen.
 	\subsection{Digitalisierung}
 		Die gemessenen Werte der Sensoren werden durch unterschiedliche Ausgangsspannungen realisiert d.h. in Abhängigkeit von der gemessenen Größe ändert sich gemessene Spannung am Ausgang des Sensors.\\
 		Diese analogen Signale werden im ersten Schritt zeitlich diskretisiert d.h. die kontinuierlichen Signale werden durch Abtastung angenähert. Unter Abtastung versteht man die Erhebung eines Wertes zu einem Zeitpunkt. Die Häufigkeit der Abtastung wird in Herz (Hz) angegeben d.h. Abtastung mit 10 Hz entspricht 10 maliges abtasten des analogen Signales innerhalb von einer Sekunde. Durch diesen Schritt erhalten wir eine Folge von gemessenen Spannungen.\\
@@ -65,28 +63,32 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\subsubsection{Dithering}
 		Ein Problem bei der Diskretisierung der Amplitude ergibt sich dadurch, dass bei einem sehr geringen Sensorwert das LSB nicht gesetzt wird. Dies hat zur Folge das Informationen verloren gehen. Um dies zu verhindern wird Zufallsrauschen auf den aktuellen Sensorwert addiert. Dadurch wird der Grenzwert manchmal überschritten. Dadurch nährt sich der Erwartungswert den Realwert an.
 		\subsubsection{Abtastung}
-		\begin{Abtasttheorem}
+
 			Ein Signal nur dann kann korrekt abgetastet werden, wenn es keine
-			Frequenzanteile enthält, die oberhalb der halben Abtastrate liegen.\\
+			Frequenzanteile enthält, die oberhalb der halben Abtastrate liegen. (Abtasttheorem)\\
 			$f_{max} \leq \frac{1}{2}f_{sample}$
-		\end{Abtasttheorem}
+
 		Aus dem Abtasttheorem folgt: Wenn wir ein Signal mit $f_{max}$ korrekt abzutasten wollen, müssen wir dieses Signal mit einer Frequenz von $2*f_{max}$ abtasten. 
 	\subsection{Lineare Systeme}
-		\begin{Lineares System}
-			Ein lineares System erfüllt folgende Eigenschaften:
-			\begin{description}
-				\item[Homogenität] $f(c*a) = c*f(a)$ d.h eine Veränderung des Input-Signales hat eine identische Änderung des Output-Signals zu folge
-				\item[Additivität] $f(a+b) = f(a)+f(b)$ d.h wenn das Input-Signal aus zwei überlagerten Signalen besteht können wir diese getrennt Auswerten und anschließend die Ergebnisse addieren
-				\item[Translationsinvarianz] $f(n) = y(n) \rightarrow f(n+s) = y(n+s)$ d.h. ein zeitlicher Versatz des Input-Signals hat den selben zeitlichen Versatz im Output-Signal zur Folge
-				\item[Kommutativität] $f(a) = b, g(b) = c \rightarrow g(a)=b, f(b) = c$ d.h. wenn mehrere lineare Systeme in einer Reihe verknüpft sind können diese vertauscht werden ohne das Ergebnis zu beeinflussen
-			\end{description}
-			Aus diesen Eigenschaften folgt: Ein lineares System ist vollständig durch seine Impulsantwort charakterisiert. Eine Impulsantwort erhalten wir durch Eingabe eines Signales welches genau an einer Stelle einen Wert größer als 0 hat (Deltafunktion). Die daraus resultierende Antwort beinhaltet alle Eigenschaften des linearen Systemes d.h. unter Verwendung der o.g. Eigenschaften können wir nachfolgend auf Basis der Impulsantwort ermitteln, welches Ergebnis aus anderen Input-Signalen resultiert.
-		\end{Lineares System}
+		Ein lineares System erfüllt folgende Eigenschaften:
+		\begin{description}
+			\item[Homogenität] $f(c*a) = c*f(a)$ d.h eine Veränderung des Input-Signales hat eine identische Änderung des Output-Signals zu folge
+			\item[Additivität] $f(a+b) = f(a)+f(b)$ d.h wenn das Input-Signal aus zwei überlagerten Signalen besteht können wir diese getrennt Auswerten und anschließend die Ergebnisse addieren
+			\item[Translationsinvarianz] $f(n) = y(n) \rightarrow f(n+s) = y(n+s)$ d.h. ein zeitlicher Versatz des Input-Signals hat den selben zeitlichen Versatz im Output-Signal zur Folge
+			\item[Kommutativität] $f(a) = b, g(b) = c \rightarrow g(a)=b, f(b) = c$ d.h. wenn mehrere lineare Systeme in einer Reihe verknüpft sind können diese vertauscht werden ohne das Ergebnis zu beeinflussen
+		\end{description}
+		Aus diesen Eigenschaften folgt: Ein lineares System ist vollständig durch seine Impulsantwort charakterisiert. Eine Impulsantwort erhalten wir durch Eingabe eines Signales welches genau an einer Stelle einen Wert größer als 0 hat (Deltafunktion). Die daraus resultierende Antwort beinhaltet alle Eigenschaften des linearen Systemes d.h. unter Verwendung der o.g. Eigenschaften können wir nachfolgend auf Basis der Impulsantwort ermitteln, welches Ergebnis aus anderen Input-Signalen resultiert.
 		\subsubsection{Überlagerung}
+
 		Aus den Eigenschaften des linearen Systems folgt: $f(x) = f(x_1+x_2+x_3) = f(x_1)+f(x_2)+f(x_3)$ d.h. wir können das Eingangssignal zerlegen (Decomposition) und die zerlegten Signale wieder zusammenführen (Synthese) ohne dass das Ergebnis der Analyse beeinflusst wird.\\
 		Diese Überlegung können wir nutzen um das Eingangssignal in mehrere Deltafunktionen zu zerlegen, diese zu Analysieren und anschließend die Teilergebnisse zusammenzufassen um das Ergebnis aus den Eingangssignal zu ermitteln.\\
 		Des weiteren ist auch eine Zerlegung das Signal in mehrere Cosinus- und Sinus-Signale interessant(siehe \label{sec-Fourier}).
 		\subsubsection{Faltung}
+		Um die Faltung zu berechnen benötigen wir ein Eingangssignal und die Impulsantwort des Systemes.\\
+		Die Grundidee besteht darin das wir das Eingangssignal in einzelne Delta-Impulse zerlegen. Für jeden diesen Delta-Impuls wird die ensprechende verschobene und skalierte Kopie der Impulsantwort berechnet. Anschließend werden alle Impulsantworten addiert.\\
+		Hierfür ergibt sich somit folgende Formel: $y[i] = \sum_{j=1}^{M}h[j]*x[i-j]$ mit $h$ ist Impulsantwort und $x$ das Eingangssignal.\\
+		Durch die geeignete Wahl der Impulsantwort können Filter, Ableitungen und Integrale realisiert werden. Im nächsten Abschnitt wird ein Verfahren beschrieben, welches die Faltung nutzt um eine Korrelation zu berechnen.
+		\subsubsection{Korrelation}
 
 
 
