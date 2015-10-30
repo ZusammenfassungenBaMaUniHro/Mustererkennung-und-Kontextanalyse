@@ -33,15 +33,15 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 	\subsection{Einführendes Beispiel}
 	\begin{itemize}
 		\item Ziel: Bestimmung von Fischen auf der Basis von Kamerainformationen
-		\item Verwendung der Kamera zum Merkmale (Features) des aktuellen Fisches zu bestimmen: Länge, Helligkeit, Breite
+		\item Verwendung der Kamera zum Merkmale (Features) bestimmen des aktuellen Fisches: Länge, Helligkeit und Breite
 		\item Annahme: Die Modelle (Beschreibung) der Fischen unterscheiden sich
-		\item Klassifikation: finde zu gegebene Merkmalen das am besten passende Modell (Welche Beschreibung der Fische passt am besten zu den aktuellen Fisch)
+		\item Klassifikation: Finde zu gegebenen Merkmalen das am besten passende Modell (Welche Beschreibung der Fische passt am besten zu dem aktuellen Fisch)
 	\end{itemize}
 	\subsection{Mustererkennungssysteme}
 		\begin{description}
-			\item[1) Sensing:] Erfassung der Umwelt mittels Sensoren, z.B: Kamera, Bewegungssensoren, Mikrophon, RFID-Lesegerät, Problem: Eigenschaften und Begrenzungen (Bandbreite, Auflösung, Empfindlichkeit, Verzerrung, Rauschen, Latenz, \dots)des Sensors beeinflussen Problemschwierigkeit 			
+			\item[1) Sensing:] Erfassung der Umwelt mittels Sensoren, z.B: Kamera, Bewegungssensoren, Mikrophon, RFID-Lesegerät, Problem: Eigenschaften und Begrenzungen (Bandbreite, Auflösung, Empfindlichkeit, Verzerrung, Rauschen, Latenz, \dots) des Sensors beeinflussen Problemschwierigkeit 			
 			\item[2) Segmentation:] Identifikation der einzelnen Musterinstanzen (Identifikation der für unser Problem relevanten Daten), z.B: Fisch auf dem Fließband
-			\item[3) Merkmalsberechnung:] Bestimmung von Features, gesucht sind dabei Features welche eine Diskrimierungsfähigkeit haben (Zwischen zwei gleichen Klassen ähnlicher Wert, Zwischen zwei verschiedenen Klassen großer Werteunterschied) und Invariant gegenüber Signaltransformationen (Rotation, Translation, Skalierung, perspektivische Verzerrung) sind; Problem: Wie kann ich aus einer großen Auswahl an Merkmalen die besten geeigneten finden?
+			\item[3) Merkmalsberechnung:] Bestimmung von Features, gesucht sind dabei Features, welche eine Diskrimierungsfähigkeit haben (Zwischen zwei gleichen Klassen ähnlicher Wert, Zwischen zwei verschiedenen Klassen großer Werteunterschied) und Invariant gegenüber Signaltransformationen (Rotation, Translation, Skalierung, perspektivische Verzerrung) sind; Problem: Wie kann ich aus einer großen Auswahl an Merkmalen die besten geeigneten finden?
 			\item[4) Klassifikation:] Annahme: Modelle (Grundlegende Eigenschaften) der Klassen (verschiedene Fische) unterscheiden sich; Ziel: Zuweisung von Probleminstanzen aufgrund deren Merkmale zu der am besten entsprechenden Klasse			
 			\item[5) Nachbereitung:] Entscheidung auf Basis Klassifikation, Problem: Wie können wir Kontextinformationen nutzen? Können wir verschiedene Klassifikatoren zusammen nutzen? 
 		\end{description}
@@ -55,19 +55,18 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 	\end{description}
 	Für weitere Informationen sind folgende Referenzen zu konsultieren: \cite[S. 3-16]{dudaPattern}
 \section{Grundlagen Signalverarbeitung}
-	In diesem Abschnitt werden die Grundlagen der Digitalen Signalverarbeitung beschrieben. In der Digitalen Signalverarbeitung werden Methoden und Techniken behandelt welche aus  anlogen Sensorwerten eine digitale Information erstellen.
+	In diesem Abschnitt werden die Grundlagen der digitalen Signalverarbeitung beschrieben. In der digitalen Signalverarbeitung werden Methoden und Techniken behandelt welche aus  anlogen Sensorwerten eine digitale Information erstellen.
 	\subsection{Digitalisierung}
-		Die gemessenen Werte der Sensoren werden durch unterschiedliche Ausgangsspannungen realisiert d.h. in Abhängigkeit von der gemessenen Größe ändert sich gemessene Spannung am Ausgang des Sensors.\\
+		Die gemessenen Werte der Sensoren werden durch unterschiedliche Ausgangsspannungen realisiert d.h. in Abhängigkeit von der gemessenen Größe ändert sich die gemessene Spannung am Ausgang des Sensors.\\
 		Diese analogen Signale werden im ersten Schritt zeitlich diskretisiert d.h. die kontinuierlichen Signale werden durch Abtastung angenähert. Unter Abtastung versteht man die Erhebung eines Wertes zu einem Zeitpunkt. Die Häufigkeit der Abtastung wird in Herz (Hz) angegeben d.h. Abtastung mit 10 Hz entspricht 10 maliges abtasten des analogen Signales innerhalb von einer Sekunde. Durch diesen Schritt erhalten wir eine Folge von gemessenen Spannungen.\\
 		Im nächsten Schritt werden die abgetasteten Werte diskretisiert (Diskretisierung der Amplituden) d.h. jeder Spannung wird ein digitaler Wert zugewiesen. Dies geschieht mittels einem A/D-Wandler, welcher entsprechend von Grenzwerten (1/2 Spannung, 1/4 Spannung, 1/8 Spannung) entsprechende Bits setzt und diese Information ausgibt.
 		\subsubsection{Dithering}
-		Ein Problem bei der Diskretisierung der Amplitude ergibt sich dadurch, dass bei einem sehr geringen Sensorwert das LSB nicht gesetzt wird. Dies hat zur Folge das Informationen verloren gehen. Um dies zu verhindern wird Zufallsrauschen auf den aktuellen Sensorwert addiert. Dadurch wird der Grenzwert manchmal überschritten. Dadurch nährt sich der Erwartungswert den Realwert an.
+		Ein Problem bei der Diskretisierung der Amplitude ergibt sich dadurch, dass bei einem sehr geringen Sensorwert das LSB nicht gesetzt wird. Dies hat zur Folge das Informationen verloren gehen. Um dies zu verhindern wird Zufallsrauschen auf den aktuellen Sensorwert addiert. Dadurch wird der Grenzwert manchmal überschritten. So nährt sich der Erwartungswert den Realwert an.
 		\subsubsection{Abtastung}
 
 			Ein Signal nur dann kann korrekt abgetastet werden, wenn es keine
 			Frequenzanteile enthält, die oberhalb der halben Abtastrate liegen. (Abtasttheorem)\\
-			$f_{max} \leq \frac{1}{2}f_{sample}$
-
+			$f_{max} \leq \frac{1}{2}f_{sample}$\\
 		Aus dem Abtasttheorem folgt: Wenn wir ein Signal mit $f_{max}$ korrekt abzutasten wollen, müssen wir dieses Signal mit einer Frequenz von $2*f_{max}$ abtasten. 
 	\subsection{Lineare Systeme}
 		Ein lineares System erfüllt folgende Eigenschaften:
@@ -75,19 +74,19 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item[Homogenität] $f(c*a) = c*f(a)$ d.h eine Veränderung des Input-Signales hat eine identische Änderung des Output-Signals zu folge
 			\item[Additivität] $f(a+b) = f(a)+f(b)$ d.h wenn das Input-Signal aus zwei überlagerten Signalen besteht können wir diese getrennt Auswerten und anschließend die Ergebnisse addieren
 			\item[Translationsinvarianz] $f(n) = y(n) \rightarrow f(n+s) = y(n+s)$ d.h. ein zeitlicher Versatz des Input-Signals hat den selben zeitlichen Versatz im Output-Signal zur Folge
-			\item[Kommutativität] $f(a) = b, g(b) = c \rightarrow g(a)=b, f(b) = c$ d.h. wenn mehrere lineare Systeme in einer Reihe verknüpft sind können diese vertauscht werden ohne das Ergebnis zu beeinflussen
+			\item[Kommutativität] $f(a) = b, g(b) = c \rightarrow g(a)=b, f(b) = c$ d.h. wenn mehrere lineare Systeme in einer Reihe verknüpft sind, können diese vertauscht werden ohne das Ergebnis zu beeinflussen
 		\end{description}
-		Aus diesen Eigenschaften folgt: Ein lineares System ist vollständig durch seine Impulsantwort charakterisiert. Eine Impulsantwort erhalten wir durch Eingabe eines Signales welches genau an einer Stelle einen Wert größer als 0 hat (Deltafunktion). Die daraus resultierende Antwort beinhaltet alle Eigenschaften des linearen Systemes d.h. unter Verwendung der o.g. Eigenschaften können wir nachfolgend auf Basis der Impulsantwort ermitteln, welches Ergebnis aus anderen Input-Signalen resultiert.
+		Aus diesen Eigenschaften folgt: Ein lineares System ist vollständig durch seine Impulsantwort charakterisiert. Eine Impulsantwort erhalten wir durch Eingabe eines Signals, welches genau an einer Stelle einen Wert größer als 0 hat (Deltafunktion). Die daraus resultierende Antwort beinhaltet alle Eigenschaften des linearen Systemes d.h. unter Verwendung der o.g. Eigenschaften können wir nachfolgend auf Basis der Impulsantwort ermitteln, welches Ergebnis aus anderen Input-Signalen resultiert.
 		\subsubsection{Überlagerung}
 
-		Aus den Eigenschaften des linearen Systems folgt: $f(x) = f(x_1+x_2+x_3) = f(x_1)+f(x_2)+f(x_3)$ d.h. wir können das Eingangssignal zerlegen (Decomposition) und die zerlegten Signale wieder zusammenführen (Synthese) ohne dass das Ergebnis der Analyse beeinflusst wird.\\
-		Diese Überlegung können wir nutzen um das Eingangssignal in mehrere Deltafunktionen zu zerlegen, diese zu Analysieren und anschließend die Teilergebnisse zusammenzufassen um das Ergebnis aus den Eingangssignal zu ermitteln.\\
-		Des weiteren ist auch eine Zerlegung das Signal in mehrere Cosinus- und Sinus-Signale interessant(siehe \label{sec-Fourier}).
+		Aus den Eigenschaften des linearen Systems folgt: $f(x) = f(x_1+x_2+x_3) = f(x_1)+f(x_2)+f(x_3)$ d.h. wir können das Eingangssignal zerlegen (Decomposition) und die zerlegten Signale wieder zusammenführen (Synthese), ohne dass das Ergebnis der Analyse beeinflusst wird.\\
+		Diese Überlegung können wir nutzen um das Eingangssignal in mehrere Deltafunktionen zu zerlegen. Anschließend werden diese analysiert und die Teilergebnisse zusammengefasst. Auf diese Weise wird das Ergebnis aus dem Eingangssignal zu ermitteln.\\
+		Des Weiteren ist auch eine Zerlegung das Signal in mehrere Cosinus- und Sinus-Signale interessant(siehe \label{sec-Fourier}).
 		\subsubsection{Faltung}
 		Um die Faltung zu berechnen benötigen wir ein Eingangssignal und die Impulsantwort des Systemes.\\
-		Die Grundidee besteht darin das wir das Eingangssignal in einzelne Delta-Impulse zerlegen. Für jeden diesen Delta-Impuls wird die ensprechende verschobene und skalierte Kopie der Impulsantwort berechnet. Anschließend werden alle Impulsantworten addiert.\\
+		Die Grundidee besteht darin, dass wir das Eingangssignal in einzelne Delta-Impulse zerlegen. Für jeden dieser Delta-Impulse wird die entsprechende verschobene und skalierte Kopie der Impulsantwort berechnet. Anschließend werden alle Impulsantworten addiert.\\
 		Hierfür ergibt sich somit folgende Formel: $y[i] = \sum_{j=1}^{M}h[j]*x[i-j]$ mit $h$ ist Impulsantwort und $x$ das Eingangssignal.\\
-		Durch die geeignete Wahl der Impulsantwort können Filter, Ableitungen und Integrale realisiert werden. Im nächsten Abschnitt wird ein Verfahren beschrieben, welches die Faltung nutzt um eine Korrelation zu berechnen.
+		Durch eine geeignete Wahl der Impulsantwort können Filter, Ableitungen und Integrale realisiert werden. Im nächsten Abschnitt wird ein Verfahren beschrieben, welches die Faltung nutzt um eine Korrelation zu berechnen.
 		\subsubsection{Korrelation}
 
 
