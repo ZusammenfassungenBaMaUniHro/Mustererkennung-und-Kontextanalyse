@@ -38,6 +38,10 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\item Annahme: Die Modelle (Beschreibung) der Fische unterscheiden sich
 		\item Klassifikation: Finde zu gegebenen Merkmalen das am besten passende Modell (Welche Beschreibung der Fische passt am besten zu dem aktuellen Fisch)
 	\end{itemize}
+	
+	\subsection{Entscheidungsgrenzen}
+		Komplexe Entscheidungsgrenze $\Rightarrow$ Mehr Parameter werden für die Bestimmung benötigt $\Rightarrow$ Weniger Trainingsdaten stehen zur Bestimmung des einzelnen Parameters zur Verfügung $\Rightarrow$ Parameter wird ungenauer bestimmt und ist anfälliger gegen Schwankungen der Trainingsdaten $\Rightarrow$.
+		Mehr Features $\Rightarrow$ höhere Dimensionalität des Merkmalsraums $\Rightarrow$ größere inhärente Komplexität der gegebenen Form von Entscheidungsgrenzen $\Rightarrow$ schlechtere Bestimmung der Parameter
 	\subsection{Mustererkennungssysteme}
 		\begin{description}
 			\item[1) Sensing:] Erfassung der Umwelt mittels Sensoren, z.B: Kamera, Bewegungssensoren, Mikrophon, RFID-Lesegerät, Problem: Eigenschaften und Begrenzungen (Bandbreite, Auflösung, Empfindlichkeit, Verzerrung, Rauschen, Latenz, \dots) des Sensors beeinflussen Problemschwierigkeit 			
@@ -46,6 +50,7 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item[4) Klassifikation:] Annahme: Modelle (Grundlegende Eigenschaften) der Klassen (verschiedene Fische) unterscheiden sich; Ziel: Zuweisung von Probleminstanzen aufgrund deren Merkmale zu der am besten entsprechenden Klasse			
 			\item[5) Nachbereitung:] Entscheidung auf Basis Klassifikation, Problem: Wie können wir Kontextinformationen nutzen? Können wir verschiedene Klassifikatoren zusammen nutzen? 
 		\end{description}
+	
 	\subsection{Entwurf von Mustererkennungssystemem}
 	\begin{description}
 		\item[1) Daten sammlen:] Wie kann man wissen, wann eine Menge von Daten ausreichend groß und repräsentativ ist, um das Klassifikationssystem zu trainieren und zu testen? 
