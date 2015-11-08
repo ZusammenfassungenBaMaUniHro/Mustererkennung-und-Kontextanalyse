@@ -17,7 +17,8 @@
 \usepackage[labelformat=empty]{caption}
 \title{Zusammenfassung - Mustererkennung und Kontextanalyse}
 \author{
-	Andreas Ruscheinski
+	Andreas Ruscheinski,
+	Marc Meier
 }
 
 
@@ -34,14 +35,14 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 	\begin{itemize}
 		\item Ziel: Bestimmung von Fischen auf der Basis von Kamerainformationen
 		\item Verwendung der Kamera zum Merkmale (Features) bestimmen des aktuellen Fisches: Länge, Helligkeit und Breite
-		\item Annahme: Die Modelle (Beschreibung) der Fischen unterscheiden sich
+		\item Annahme: Die Modelle (Beschreibung) der Fische unterscheiden sich
 		\item Klassifikation: Finde zu gegebenen Merkmalen das am besten passende Modell (Welche Beschreibung der Fische passt am besten zu dem aktuellen Fisch)
 	\end{itemize}
 	\subsection{Mustererkennungssysteme}
 		\begin{description}
 			\item[1) Sensing:] Erfassung der Umwelt mittels Sensoren, z.B: Kamera, Bewegungssensoren, Mikrophon, RFID-Lesegerät, Problem: Eigenschaften und Begrenzungen (Bandbreite, Auflösung, Empfindlichkeit, Verzerrung, Rauschen, Latenz, \dots) des Sensors beeinflussen Problemschwierigkeit 			
 			\item[2) Segmentation:] Identifikation der einzelnen Musterinstanzen (Identifikation der für unser Problem relevanten Daten), z.B: Fisch auf dem Fließband
-			\item[3) Merkmalsberechnung:] Bestimmung von Features, gesucht sind dabei Features, welche eine Diskrimierungsfähigkeit haben (Zwischen zwei gleichen Klassen ähnlicher Wert, Zwischen zwei verschiedenen Klassen großer Werteunterschied) und Invariant gegenüber Signaltransformationen (Rotation, Translation, Skalierung, perspektivische Verzerrung) sind; Problem: Wie kann ich aus einer großen Auswahl an Merkmalen die besten geeigneten finden?
+			\item[3) Merkmalsberechnung:] Bestimmung von Features, gesucht sind dabei Features, welche eine Diskrimierungsfähigkeit haben (Zwischen zwei gleichen Klassen ähnlicher Wert, zwischen zwei verschiedenen Klassen großer Werteunterschied) und Invariant gegenüber Signaltransformationen (Rotation, Translation, Skalierung, perspektivische Verzerrung) sind; Problem: Wie kann ich aus einer großen Auswahl an Merkmalen die am besten geeigneten finden?
 			\item[4) Klassifikation:] Annahme: Modelle (Grundlegende Eigenschaften) der Klassen (verschiedene Fische) unterscheiden sich; Ziel: Zuweisung von Probleminstanzen aufgrund deren Merkmale zu der am besten entsprechenden Klasse			
 			\item[5) Nachbereitung:] Entscheidung auf Basis Klassifikation, Problem: Wie können wir Kontextinformationen nutzen? Können wir verschiedene Klassifikatoren zusammen nutzen? 
 		\end{description}
