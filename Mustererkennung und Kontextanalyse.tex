@@ -94,7 +94,24 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		Hierfür ergibt sich somit folgende Formel: $y[i] = \sum_{j=1}^{M}h[j]*x[i-j]$ mit $h$ ist Impulsantwort und $x$ das Eingangssignal.\\
 		Durch eine geeignete Wahl der Impulsantwort können Filter, Ableitungen und Integrale realisiert werden. Im nächsten Abschnitt wird ein Verfahren beschrieben, welches die Faltung nutzt um eine Korrelation zu berechnen.
 		\subsubsection{Korrelation}
-
+		Das Ziel in der Korrelation ist die Erkennung eines bekannten Signales $t$ innerhalb eines verrauchten Signales $x$.\\
+		Für die Berechnung der Korrelation nutzen wir die Faltung mit der gespiegelten Impulsantwort $y[n] =x[n]*t[-n]$. Als Ergebnis dieser Faltung erhalten wir ein Ausgangssignal $y$, welches signifikate Ausschläge im übereinstimmenden Bereich hat.
+		\subsection{Fourier-Transformation}
+		Mittels einer Fourier-Transformation können wir unser Eingangssignal in eine Summe von Sinus- und Kosinus-Funktionen zerlegen.\\
+		Hierfür müssen folgende Bedingungen gelten (Dirichlet-Bedingungen):
+		\begin{enumerate}
+			\item Anzahl der Unstetigkeiten innerhalb einer Periode ist endlich
+			\item Anzahl der Maxima und Minima innerhalb einer Periode ist endlich
+			\item Funktion ist in jeder Periode integrierbar (d.h. die Fläche unter dem Betrag der Funktion ist in jeder Periode endlich)
+		\end{enumerate}
+		Die Sinus- und Kosinus-Funktionen werden auch Basisfunktionen genannt und bilden einen Vektorraum.
+		\subsubsection{Fourier-Transformation Grundideen}
+		Nachfolgend werden die Grundideen der Fourier-Transformationen erläutert.\\
+		Die Ausgangsidee ist dass jedes Signal durch eine Summe von phasenverschobenen Kosinus-Funktionen beschreiben werden kann. Wir sprechen von einer Phasenverschiebung falls zwei Kosinus-Funktionen unterschiedliche Nullstellen haben (d.h. eine Verschiebung auf der x-Achse). Hierfür ergibt sich folgende Formel: $s[i] = \sum_{k=0}^{N/2} M_{k}*cos(2*\pi*k*i/N+\phi_{k})$ wobei $i = 0,\dots,N-1$, $M_{k}$.\\
+		Die zweite Idee ist dass jede phasenverschobene Kosinus-Funktion $M*cos(x+\phi)$ kann durch eine Summe von Kosinus- und Sinus-Funktion ohne Phasenverschiebung repräsentiert werden: $M*cos(x+\phi) = A*cos(x) + B*sin(x)$ mit $A=M*cos(\phi)$ und $B=M*sin(\phi)$ wobei $M$ ist die Amplitude und $\phi$ die Phasenverschiebung. Dies erhalten wir durch den Übergang von Kartesischen-Koordinaten in Polar-Koordinaten.\\
+		Da wir uns im diskreten Bereich befinden gilt folgende Eigenschaft: Das Signal aus N Werten ist ein N-dimensionaler Vektor. Wie vorher beschrieben bilden die gesuchten Basisfunktionen einen Vektorraum. Für einen N-dimensionalen Vektorraum benötigen wir also eine Basis mit N orthogonalen Vektoren (d.h. das Skalarprodukt zweier Basis-Vektoren muss 0 sein).\\
+		Die diskreten Sinus und Kosinus-Funktionen $c_{k}[i] = sin(2*\pi*k*i/N)$ bzw. $c_{k}[i] = cos(2*\pi*k*i/N)$ sind alle zueinander orthogonal. Da die Summe von 0 bis $N/2$ läuft erhalten wir genau $N/2+1$ phasenverschobene Kosinus-Funktionen, welche jeweils in eine Sinus und eine Kosinus Funktion zerlegt wird. Somit erhalten wir $2*(N/2+1) = N+2$ Basisfunktionen. Da $s_{0} = sin(0)$ und $s_{N/2} = sin(2*pi*N/2*i/N) = sin(\pi*i)$ jeweils Nullvektoren sind, können diese Verworfen werden wodurch wir $N$ Basisfunktionen erhalten.
+		
 
 
 
