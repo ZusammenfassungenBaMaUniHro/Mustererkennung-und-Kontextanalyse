@@ -136,17 +136,17 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		Der Erwartungswert einer Zufallsvariable wird auch als Mittelwert $\mu$ bezeichnet.\\
 		Für gleichverteilte diskrete Zufallsvariablen x mit Werten $x_1,x_2,\dots,x_n$ gilt: $P(x_i) = 1/n$ und somit: $E[x] = \sum_{i=1}^{n} (x_{i}*\frac{1}{n}) = \frac{1}{n}*\sum_{i=1}^{n} x_{i}$.\\
 		Für die Erwartungswerte von Funktionen einer Zufallsvariablen, $f(x)$ gilt: $E[f(x)]=\sum_{i=1}^{n} (f(x_i)*P(x_i))$ bzw. $E[f(x)] = \int_{X} (f(x)*p(x) dx$.
-		\subsection{Momente}
+		\subsubsection{Momente}
 		Der r-te Moment einer Zufallsvariable x ist $E[x^r]$. Der erste Moment mit $r=1: E[x] \mu$ heißt auch Mittelwert.\\
 		Der r-te zentrale Moment ist: $\mu_r = E[(x-E[x])^r] = E[(x-\mu)^r]$.\\ 
 		Das zweite zentrale Moment $\mu_2 = E[(x-\mu)^2] = \sigma^2$ heißt auch Varianz; $\sqrt{\sigma^2}$ heißt Standardabweichung $\sigma$.\\
 		Die Schiefe einer Verteilung ist ein Maß für ihre Asymmetrie: $skew(x) = \frac{\mu_3}{\sigma^3} = \frac{E[(x-\mu)^3]}{\sigma^3}$. Wenn $skew(x) > 0$ linkssteil (rechtsschief) bzw. $skew(x) < 0$ rechtssteil (linksschief).\\
 		Die Wölbung einer Verteilung ist ein Maß für ihrere Spitzheit: $kurt(x) = \frac{\mu_4}{\sigma^4}$. Wenn $kurt(x) < 3$ flach bzw. $kurt(x) > 3$ spitz. Falls x normalverteilt gitl: $kurt(x)=3$.
-		\subsection{Emprische Werte}
+		\subsubsection{Emprische Werte}
 		Die vorliegenden Messwerte $x_1,\dots,x_n$ stellen eine Stichprobe aus der Zufallsvariablen x zugrunde liegenden Verteilung dar. Überlichweise sind die wahren Parameter ($\mu,\sigma$) dieser Verteilung nicht bekannt. Mann muss daher diese Parameter auf Basis der Stichprobe schätzen.\\
 		Der empirische Mittelwert: $\overline{x} = \frac{1}{n}*\sum_{i=1}^{n} x_i$ wobei $E[\overline{x}] = \mu$.\\
 		Die empirische Varianz ist: $s^2 = \frac{1}{n-1}*\sum_{i=1}^{n}(x_i-\overline{x})^2$ wobei $E[s^2] = \sigma^2$.
-		\subsection{Lageparameter}
+		\subsubsection{Lageparameter}
 		Lageparameter treffen allgemeine Aussagen über die Position der Verteilung und stellen in gewisser Weise die Lage ihres Schwerpunkts dar. Verschiedene Lagemaße sind dabei unterschiedlich robust, zeigen sich also mehr oder weniger empfindlich gegenüber Ausreißerwerten. Beispiele: Mittelwert, Median, Modus.\\
 		Der Median ist der kleinste Wert $x_m$, bei dem die kumultative Verteiltungsfunktion $F_p(x) = \int_{-\inf}^{x} p(z) dz$ einen Wert von $\geq 0.5$ liefert d.h. er teilt die Verteilungsfunktion in zwei (flächenmäßig) gleich große Teile.\\
 		Für eine geordnete Stichprobe $x_1\leq\dots\leq x_n$ ist der Median der Wert $x_{(n+1)/2}$ (falls n ungerade) bzw. der Wert $1/2*(x_{n/2}+x_{n/2+1})$. Daraus folgt dass der Median als Lagemaß wesentlich unempfindlicher ist gegenüber Ausreißer als der Mittelwert.\\
@@ -162,7 +162,7 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item Quartile: drei Quartile teilen die geordnete Datenmenge in vier gleich große Segmente, wobei das zweite Quartil gleichzeitig den Median darstellt
 			\item Interquartilabstand bezeichnet den Abstand zwischen den 1. und den 3. Quartil und umfasst also die Hälfte der Daten und ist analog zum Median, robuster gegen Ausreißer als die Varianz-
 		\end{itemize}	
-		\subsection{Standardisierung}
+		\subsubsection{Standardisierung}
 		\begin{itemize}
 			\item Problem: Normalverteilung $N(\mu,\sigma^2)$ hat nicht zwangsläufig eine Fläche von 1 unter der Kurve
 			\item Lösung: Transformation mit $z = \frac{x-\mu}{sigm}$ dadurch Normalverteilung $N(0,1)$ als Ergebnis
@@ -175,7 +175,7 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\end{itemize}
 			\item für multivarianten Fall mit $\Upsigma$ die Kozarianzmatrix gilt: $z=\Upsigma^{-1/2}*(x-\mu)$ d.h. aus $N(\mu,\Upsigma)$ wird $N(0,I)$
 		\end{itemize}
-		\subsection{Korrelation}
+		\subsubsection{Korrelation}
 		\begin{itemize}
 			\item x,y Zufallsvariablen und $\mu_x,\mu_y$ die Erwartungswerte und $\sigma_x,\sigma_y$ die Standardabweichung
 			\item Korreleationkoeffizient $p_{xy}$ ist ein Maß für die lineare Abhängigkeit
@@ -184,7 +184,7 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item wenn x und y unabhängig $\rightarrow p_{xy} = 0$ anders rum nicht
 			\item emprische Korreleation $r_{xy}$ zweier Stichproben $x=x_i,y=y_i$ misst die Abhängigkeit zweier Stichproben: $r_{xy} = \frac{x'*y'}{||x'||*||y'||}$ mit $x'_i = x_i-\overline{x},y'_i=y_i-\overline{y}$
 		\end{itemize}
-		\subsection{Einsatz statistischer Merkmale}
+		\subsubsection{Einsatz statistischer Merkmale}
 		\begin{itemize}
 			\item problemunabhängig d.h. können immer eingesetzt werden da kein Vorwissen über die Problemstruktur 
 		\end{itemize}
@@ -201,13 +201,103 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\end{center}
 		\begin{itemize}
 			\item Intervall und Ratio Saklen sind metrisch d.h. Abstandsbegriff ist sinnvoll
-			\item Addition auf Intervallsaklen für Abstände sinvoll
+			\item Addition auf Intervallsaklen für Abstände sinnvoll
 			\item Ratioskalen haben Nullpunkt
 			\item Nominal- und Ordinalskalen sind immer diskret
 		\end{itemize}
 	\subsection{Merkmale für Zeitreihen}
-	\subsubsection{Summarische Merkmale}
-	\subsection{Merkmale für kinetische Systeme}
+		\subsubsection{Summarische Merkmale}
+		\begin{itemize}
+			\item Gegeben ein Signal $x = x_1,\dots,x_n$
+			\item Zero Crossing Rate (im Ortsbereich): $zcr(x) = \frac{1}{n-1} \sum_{i=2}^{n} \mathfrak{I}\{x_i*x_{i-1} < 0\}$ mit $\mathfrak{I}\{A\} = 1$ falls A wahr
+			\item Energie (im Orts- und im Frequenzbereich): $en(x) = \sum_{i=1}^{n} x_i^2$
+			\item Entropie (im Orts- und im Frequenzbereich); $ent(x) = -\sum_{i=1}^{n} x_i^**log(x_i^*)$ wobei $x_i^* = \frac{x_i}{\sum_{j=1}^{n}x_j}$
+			\item Schwerpunkt (spectral centroid)(Frequenzbereich): $sc(x) = (\sum_{k=1}^{K}f_k*|x_k|^2)/(\sum_{k=1}^{k}|x_k|^2)$
+			\item Bandbreite (bandwidth)(Frequenzbereich) $bw(x) = (\sum_{k=1}^{k}(f_k-sc)^2*|x_k|^2)/(\sum_{k=1}^{k}|x_k|^2)$
+		\end{itemize}
+		\subsubsection{Autokorrelation, Grundfrequenz}
+		\begin{itemize}
+			\item Signal $x = x_1,\dots,x_n$
+			\item Autokorrelation: $R_x(\tau) = (x\star x)(\tau) = \sum_{i}^{n} x_i*x_{i-\tau}$
+			\item $\tau$ = Verzögerungsparameter (Lag)
+			\item üblich Autokorrelation: $ACF_x(\tau) = \frac{R_x(\tau)}{R_x(0)}$
+			\item Verwendung: Bestimmung der Grundfrequenz $->$ das zweite Maximum der ACF liefert die $1/f_0$ Periodendauer
+			\item d.h. Tau als Parameter $\rightarrow$ durchprobieren bis zweite Maximum gefunden, Begründung: $\tau = 0$ ist immer das erste Maxima
+			\item Maximum des Fourierspektrums nicht geeignet da im niedriegen Frequenzbereich nur eine grobe Auflösung
+		\end{itemize}
+		\subsubsection{Phasendifferenz}
+		\begin{itemize}
+			\item zwei Sinus Signale: $x_i = sin(w*i), y_i = sin(w*i+\phi)$ d.h. gleiche Frequenz aber Phasenverschiebung
+			\item $\phi = arccos(r_{xy})$
+		\end{itemize}
+	\subsection{Merkmale für kinetische Systeme ????}
+\section{Bayessche Entscheidungstheorie}
+	\subsection{Einfürhung}	
+	\begin{itemize}
+		\item Natur hat einen Zustand $\omega$ aus einer Wertemenge $\Omega = \{\omega_1,\omega_2,\dots\}$
+		\item Beispiel $\omega$: Fisch ist Wolfsbarsch ($\omega_1$) oder Lachs($\omega_2$) 
+		\item $\omega$ ist meistens unbekannt d.h. eine Zufallsvariable
+		\item Wenn es gleich viele Lachse und Wolfsbarsche gibt, ist es gleichwahrscheinlich die eine oder andere Art zu tippen
+		\item a priori Wahrscheinlichkeit = Vorwissen
+		\item P("Barsch") + P("Lachs) = 1
+		\item wenn wir nur die a priori Wahrscheinlichkeitne kennen ist die Wahl mit der größten Wahrscheinlichkeit immer die beste
+		\item Typischerweise haben wir mehr Informationen d.h. zusätzlichen Wissen für unsere Entscheidung
+		\item Beispiel: die Helligkeit (Merkmal $x \in \mathbb{R}$) hängt von der Fischart $\omega$ ab d.h. wir haben klassenabhängige Wahrscheinlichkeiten
+		\item $p(x|\omega)$ ist die klassenabhängige Wahrscheinlichkeit des Merkmals x 
+		\item uns interessiert $P(\omega_i|x)$ also die Wahrscheinlichkeit dass die Welt den Zustand $\omega_i$ hat nachdem wir x beobachtet haben
+		\item Verwendung: Satz von Bayes: $P(\omega_i|x) = \frac{p(x|\omega_i)*P(\omega_i)}{p(x)}$ mit $p(x) = \sum_{i=1}^{2} p(x|\omega_i) P(\omega_i)$ (für unseren Fall von zwei Fischen)
+		\begin{itemize}
+			\item $P(\omega_i|x)$: Die Wahrscheinlichkeit des wahren Zustands, nachdem wir den Beweis haben (Posteriori)
+			\item $p(x|\omega_i$: Die Passfähigkeit des Beweises x zum möglichen wahren Zustand $\omega$ (Likelihood)
+			\item $P(\omega_i$): Die Wahrscheinlichkeit des wahren Zustands bevor wir den Beweis gesehen haben
+		\end{itemize}
+		\item Nun Entscheidung für $\omega$ mit der größten Posteriori $P(\omega_i|x)$ 
+	\end{itemize}
+	\subsection{Bayes’sche Entscheidungstheorie}
+		\subsubsection{Definitionen}
+		\begin{itemize}
+			\item Merkmalsvektor x als Element eines d-dimensionalen Euklidischen Merkmalsraums $R^d$ d.h. $x \in R^d$
+			\item $\Omega = \{\omega_i,\omega_2,\dots,\omega_c\}$ eine endliche Menge von möglichen Zuständen (Klassen, Kategorien) 
+			\item $A = \{\alpha_1,\dots,\alpha_a\}$ eine endliche Menge von möglichen Aktionen
+			\item Eine Kostenfunktion $\Lambda(\alpha_i|\omega_j)$ die angiebt welche Kosten die Aktion $\alpha_i$ verursacht wenn der Zustand $\omega_j$ ist
+		\end{itemize}
+		\subsubsection{Bayes’sche Entscheidungstheorie - formal}
+		\begin{itemize}
+			\item $p(x|\omega_j)$ und $P(\omega_j)$ sind wie vorher die klassenbedingte Wahrscheinlichkeit von x gegeben $\omega_j$ bzw. die a-priori Wahrscheinlichkeit von $\omega_j$
+			\item Es gilt analog für die a-posteriori-Wahrscheinlicht: $p(\omega_j|x) = \frac{p(x|\omega_j)*P(\omega_j)}{p(x)}$ wobei $p(x) = \sum_{i=1}^{c} p(x|\omega_i)P(\omega_i)$
+			\item gegeben ein Merkmalsvektor x. Nun soll eine Aktion $\alpha_i$ durchzuführen. Welche kosten entstehen dabei?
+			\item Wenn Zustand $\omega_j$ ist sind die Kosten von $\alpha_i$ nach Def: $\Lambda(\alpha_i|\omega_j)$
+			\item Zustand $\omega_j$ ist jedoch nicht gegeben, wir kennen nur $P(\omega_j|x)$. Können aber den Erwartungswert der Kosten d.h. das bedingte Risiko $R(\alpha_i|x)$ bestimmen: $R(\alpha_i|x) = E_{\omega|x}[\Lambda(\alpha_i|\omega)] = \sum_{j=1}^{c} \Lambda(\alpha_i|\omega_j)P(\omega_j|x)$
+			\item Bayessche Entscheidungsregel besagt nun: wenn x gegeben, wähle Aktion $\alpha_i$ für die das bedingte Risiko $R(\alpha_i|x)$ minimal ist
+			\item sei $\alpha(x)$ eine Entscheidungsregel welche für ein gegebenes x eine Aktion $\alpha_i$ auswählt
+			\item dann ist das Gesamtrisiko unter dieser Entscheidungsregel: $R_\alpha = \int R(\alpha(x)|x)p(x) dx$
+			\item $R_\alpha$ wird minimal wenn man für jeden Punkt x das Minimum wählt d.h. die Aktion $\alpha_i$ für die $R(\alpha_i|x)$ minimal ist
+			\item das minimale unvermeidbare Risiko $R^*$ heißt Bayes-Risiko
+		\end{itemize}
+		\subsubsection{Anwendung}
+		\begin{itemize}
+			\item ???
+		\end{itemize}
+		\subsubsection{Klassifikation und Diskriminanten}
+		\begin{itemize}
+			\item Klassifikatoren können durch Diskriminantenfunktionen repräsentiert erden
+			\item Klassifikator für die Klassen $\omega_1,\dots,\omega_c$ besteht aus einer Menge von Diskriminantenfunktionen $g_i(x),i\in\{1,\dots,c\}$
+			\item dieser Klassfikator weisst x einer Klasse $\omega_i$ gdw. $g_i(x) > g_j(x), \forall j\neq i$
+			\item Bayes-Klassifikator für den allgemeinen Fall mit Risiko kann wie folgt definiert werden: $g_i(x) = -R(\alpha_i|x)$
+			\item für die Klassifikation mit minimalen Fehler vereinfacht sich dies zu: $g_i(x) = P(\omega_i|x) \propto p(x|\omega_i)P(\omega_i)$
+			\item für eine gegebene Menge von Diskriminanten $g_i(x)$ liefert eine Transformation mit einer monoton wachsenden Funktion $f()$ eine äquivalente Menge von Diskriminanten $f(g_i(x))$
+			\item dadurch alternative Formulierungen:
+			\begin{itemize}
+				\item $g_i(x) = P(\omega_i|x) = \frac{p(x|\omega_i)*P(\omega_i)}{p(x)}$
+				\item $g_i(x) =p(x|\omega_i)*P(\omega_i)$
+				\item $g_i(x) = ln(p(x|\omega_i))*ln(P(\omega_i))$
+			\end{itemize}
+			\item Ein Klassifikator (Entscheidungsregel) für $c$ Klassen zerlegt den Merkmalsraum $\mathbb{R}^d$ in maximal c Entscheidungsregionen $R_i,i\in \{1,\dots,c\}$
+			\item Falls für einen Merkmalsvektor $x$ gilt $g_i(x) > g_j(x),\forall j\neq i$ dann liegt x in der Entscheidungsregion $R_i$ und x wird als $\omega_i$ klassifiziert
+			\item verschiedene Entscheidungsregionen werden durch Entscheidungsgrenzen voneinander getrennt
+			\item Entscheidungsgrenzne sind die Bereiche in denen die beiden größten Diskriminanten denselben Wert annehmen
+		\end{itemize}
+
 \bibliography{library}
 \bibliographystyle{plain}
 
