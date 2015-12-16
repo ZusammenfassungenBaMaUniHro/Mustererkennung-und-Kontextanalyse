@@ -28,7 +28,7 @@
 \begin{framed}Korrektheit und Vollständigkeit der Informationen sind nicht gewährleistet.
 Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 \end{framed}
-\setcounter{tocdepth}{1}
+
 \tableofcontents
 
 \section{Überblick Klassifikation}
@@ -323,6 +323,65 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item die Hauptachsen der Hyperellipsoide sind die Eigenvektoren von $\Sigma$, die Eigenwerte geben die Länge dieser Achsen an
 			\item $r^2 = (x-\mu)^t\Sigma^{-1}(x-\mu)$ ist die quadrierte Mahalanobis-Distanz; Konturen konstanter Dichte sind Hpyerellipsoide konstanter Mahalanobis-Distanz zu $\mu$
 		\end{itemize}
+	\subsection{Diskriminanten für die Normalverteilung}
+	\begin{itemize}
+		\item vorher gezeigt dass Diskriminante $g_i(x) = ln(p(x|\omega_i))*ln(P(\omega_i))$ Klassifikation mit minimaler Fehlerrate liefert
+		\item wenn $p(x|\omega_i) = N(\mu_i,\Sigma_i)$ einsetzen in $g_i(x)$ : $g_i(x) = -\frac{1}{2}(x-\mu_i)\Sigma_i^{-1}(x-\mu_i)-\frac{d}{2}ln(2\pi)-\frac{1}{2} ln(|\Sigma_i|)+ln(P(\omega_i))$ $\rightarrow$ Entfernung von $-\frac{d}{2}ln(2\pi)$ da konstant und nicht von der Klasse abhängt
+		\item Also erhalten wir: $g_i(x)$ : $g_i(x) = -\frac{1}{2}(x-\mu_i)^t\Sigma_i^{-1}(x-\mu_i)-\frac{1}{2} ln(|\Sigma_i|)+ln(P(\omega_i))$
+		\item Entscheidungsgrenzen:
+		\begin{itemize}
+			\item $\Sigma_i = \sigma^2I$ d.h. Alle Merkmale unabhängig, gleiche Varianzen, auf der Hauptdiagonalen stehen die gleichen Werte; Die Klassen bilden kugelförmige Häufungen gleicher Größe um ihre jeweiligen Mittelpunkte.
+			\begin{itemize}
+				\item es gilt: $\Sigma_i^{-1} = (1/\sigma^2)I$ und $|\Sigma_i| = \sigma^{2d}$
+				\item einsetzen in Formel: $g_i(x) = -\frac{1}{2\sigma^2}(x-\mu_i)^t(x-\mu_i)-\frac{1}{2} ln(\sigma^{2d})+ln(P(\omega_i))$ 
+				\item Konstanten entfernen: $g_i(x) = -\frac{1}{2\sigma^2}(x-\mu_i)^t(x-\mu_i)+ln(P(\omega_i))$ 
+				\item Euklidische Distanz: $(x-\mu_i)^t(x-\mu_i) = ||x-\mu_i||^2$
+				\item Also:  $g_i(x) = -\frac{||x-\mu_i||^2}{2\sigma^2}+ln(P(\omega_i))$ 
+				\item Expandieren:  $g_i(x) = -\frac{1}{2\sigma^2}(x^tx-2\mu_i^tx+\mu_i^t\mu)+ln(P(\omega_i))$ 
+				\item Also erhalten wir eine lineare Diskriminante: $g_i(x) = w_i^t*x+ w_{i0}$ (lineare Maschine, $w_{i0}$ ist Schwellwert)
+				\item d.h. die Entscheidungsgrenzen zwischen den Regionen werden durch die lineare Gleichung: $g_i(x) = g_j(x)$ definiert (Hyperebenen)
+				\item die Hyperebene ist orthogonal zum Vektor w, der Verbindungsline zwischen den beiden Mittelwertvektoren
+				\item Line wird in $x_0$ geschnitten falls die a-priori-Wahrscheinlichkeiten gleich sind, liegt $x_0$ zwischen $\mu_i$ und $\mu_j$
+			\end{itemize}
+			\item $\Sigma_i = \Sigma$ d.h. alle Klassen haben gleiche Kovarianzmatrix d.h.Die Klassen bilden hyperellipsoide Häufungen gleicher Größe, Form und Orientierungen um ihre jeweiligen Mittelpunkte.
+			\begin{itemize}
+				\item wieder einsetzen in $g_i$: $g_i(x) = -\frac{1}{2}(x-\mu_i)^t\Sigma_i^{-1}(x-\mu_i)-\frac{1}{2} ln(|\Sigma_i|)+ln(P(\omega_i))$ 
+				\item Konstanten entfernen:  $g_i(x) = -\frac{1}{2}(x-\mu_i)^t\Sigma_i^{-1}(x-\mu_i)+ln(P(\omega_i))$
+				\item Ausmultiplizieren und Symmetrie von $\Sigma$ liefert wieder lineare Maschine 
+				\item nicht mehr orthogonal zur Verbindungslinie der Mittelwerte, bei gleicher a-priori-Wahrscheinlicht $x_0$ immer noch auf halben Wege zwischen $\mu_i$ und $\mu_j$
+			\end{itemize}
+			\item $\Sigma_i = beliebig$
+			\begin{itemize}
+				\item einsetzen und ausmultiplizieren ergibt Quadratische-Diskriminante
+				\item beliebige Normalverteilungen führen zu Entscheidungsgrenzen welche allgemeine Hyperquadriken sind
+				\item Bereits kleine Anzahl von Klassen können die Entscheidungsgrenzen komplexe Formen annehmen lassen
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+	\subsection{Empirischer Fall}
+	\begin{itemize}
+		\item im Anwendungsfall eher unrealisitisch das man alle Parameter kennt d.h. muss diese auf Basis von Traningsdaten schätzen
+		\item wenn man Normalverteilung annehmen möchte:
+		\begin{itemize}
+			\item $\hat{P}(\omega_i) = \frac{n_i}{n}$
+			\item $\hat{\mu}_i = \frac{1}{n_i}\sum_{j=1}^{n_i} x_{ij}$
+			\item $\hat{\Sigma} = \frac{1}{n-c}\sum_{i=1}^{c}\sum_{j=1}^{n_i}(x_{ij}-\hat{\mu}_i)(x_{ij}-\hat{\mu}_i)^t$
+			\item mit $n_i$ Anzahl der Traningsdatensätze für die Klassei, n Anzahl aller Traningsdatensätze und $x_{ij}$ Traningsdatensatz Nummer j für Klasse i
+			\item dies nennt man Lineare Diskriminazanalyse
+		\end{itemize}
+		\item für Fall 3:
+		\begin{itemize}
+			\item $\hat{P}(\omega_i) = \frac{n_i}{n}$
+			\item $\hat{\mu}_i = \frac{1}{n_i}\sum_{j=1}^{n_i} x_{ij}$
+			\item $\hat{\Sigma_i} = \frac{1}{n_i-1}\sum_{j=1}^{n_i}(x_{ij}-\hat{\mu}_i)(x_{ij}-\hat{\mu}_i)^t$
+			\item dies nennt man Quadratische Diskriminazanalyse
+		\end{itemize}
+		\item Bias/Variance Tradeoff = ???
+	\end{itemize}
+	\subsection{Diskrete Merkmale}
+	\begin{itemize}
+		\item Integrale durch Summen ersetzen, sonst alles wie bisher
+	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
 
