@@ -297,7 +297,32 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item verschiedene Entscheidungsregionen werden durch Entscheidungsgrenzen voneinander getrennt
 			\item Entscheidungsgrenzne sind die Bereiche in denen die beiden größten Diskriminanten denselben Wert annehmen
 		\end{itemize}
-
+		\subsubsection{Normalverteilung}
+		\begin{itemize}
+			\item Formel (univariant): $p(x) = N(x;\mu,\sigma^2) = \frac{1}{\sqrt{2*\pi}\sigma}\exp[-\frac{1}{2}(\frac{x-\mu}{\sigma})^2]$
+			\item Mittelwert (erster Moment): $\mu$, Varianz (zweite zentrale Moment): $\sigma^2$
+			\item Der zentrale Grenzwertsatz: Die Summe von n unabhängigen Zufallsvariablen kovergiert gegen Normalverteilung mit $n\rightarrow \infty$. Da viele natürliche Vorgänge einer großen Zahl unabhängiger Störfaktoren unterliegen, ist die Normalverteilungsdannahme sinnvoll.
+			\item hat hohe Entropie d.h. die Verteilung mit der größten Unsicherheit über die Werte einer Zufallsstichprobe
+			\item Formel (multivariant): $N(x;\mu,\Sigma) = \frac{1}{(2*\pi)^{d/2}|\Sigma|^{1/2}}*\exp[-\frac{1}{2}*(x-\mu)^t\Sigma^{-1}(x-\mu)]$ 
+			\begin{itemize}
+				\item $x = (x_1,\dots,x_d)^t$ ein d-dimensionaler Spaltenvektor
+				\item $\mu = (\mu_1,\dots,\mu_d)^t$ ein d-dimensnaler Mittelwert-Vektor
+				\item $\Sigma$ ist eine $d\times d$ Kovarianzmatrix, $|\Sigma|$ die Diskriminante, $\Sigma^{-1}$ Inverse Matrix
+				\item $\mu = E[x] = \int x*p(x)) dx$ (können Komponentenweise bestimmt werden $\mu_i = E[x_i]$)
+				\item $\Sigma = E[(x-\mu)(x-\mu)^t] ) = \int (x-\mu)(x-\mu)^tp(x)dx$ ($\sigma_{ij} = E[(x_i-\mu_i)(x_j-\mu_j)]$)
+			\end{itemize}
+			\item für Kovarianzmatrix $\Sigma$ gilt:
+			\begin{itemize}
+				\item $\sigma_{ii}$ sind die Varianzen der entsprechenden $x_i$ also $\sigma^2_i$
+				\item $\sigma_{ij}$ sind Kovarianzen von $x_i$ und $x_j$, Wenn $x_i$ und $x_j$ unabhängig dann gilt $\sigma_{ij} = 0$
+				\item falls alle nicht-diagonalelemente Null sind, ist die multivariante Verteilung einfach das Produkt der d univarianten Verteilungen der Komponenten von x
+				\item die Kovarianzmatrix ist symmetrisch und positiv (semi-) definit (M positiv definit: $x^tMx>0 \forall x \neq0$)
+			\end{itemize}
+			\item Stichproben aus multivarianter Gaußverteilungen bilden typischerweise eine Häufung deren Mittelpunk von $\mu$ und deren Form von $\Sigma$ definiert wird
+			\item Orte gleicher Wahrscheinlichkeitsdichte liegen auf Hyperellipsoiden für die $(x-\mu)^t\Sigma^{-1}(x-\mu)$ konstant ist
+			\item die Hauptachsen der Hyperellipsoide sind die Eigenvektoren von $\Sigma$, die Eigenwerte geben die Länge dieser Achsen an
+			\item $r^2 = (x-\mu)^t\Sigma^{-1}(x-\mu)$ ist die quadrierte Mahalanobis-Distanz; Konturen konstanter Dichte sind Hpyerellipsoide konstanter Mahalanobis-Distanz zu $\mu$
+		\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
 
