@@ -382,6 +382,114 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 	\begin{itemize}
 		\item Integrale durch Summen ersetzen, sonst alles wie bisher
 	\end{itemize}
+\section{Parameterschätzung}
+	\subsection{Einführung}
+	\begin{itemize}
+		\item Ziel: Konstruieren eines Klassifikators
+		\item Benötigen: a-priori-Verteilung $P(\omega_i)$ und klassenbedingten Verteilungen $p(x|\omega_i)$
+		\item Problem: Verteilungen sind unbekannt
+		\item haben Anzahl an Stichproben $D=(x_1,\dots,x_n)^t$ mit dazugehörigen Klassen $t=(\omega_{i1},\dots,\omega_{\omega_{in}})^t$ mit D ist eine $n \times d$ Matrix, d ist die Anzahl der Dimensionen des Merkmalsraums. Jede Zeile von D ist eine Beobachtung $x_i$
+		\item $n_i$ Anazahl der Trainingsdaten der Klasse $\omega_i$ und es gilt $n = \sum_{i=1}^{c} n_i$
+		\item $P(\omega_i)$ können wir schwätzen durch z.b. Zahlen der Häufigkeiten: $\hat{P}(\omega_i) = \frac{n_i}{n}$
+		\item $p(x|\omega_i)$ ist das Problem wir müssen eine Funktion $f(x)$ schätzen d.h. den Funktionswert an unendlich vielen Stellen $x\in R^d$, Problem: Raumvolumen wächst exponentiell $\rightarrow$ bei einer festen Anzahl von Trainingsdaten sind $x_i$ immer weiter im Raum versteht d.h. die leeren Bereiche welche $f(x)$ raten muss werden immer größer
+		\item Lösung: Annahme das $f(x)$ keine beliebige Form hat sondern aus einer Funktionsfamilie $f(x|\theta)$ stammt, aus der die gescuhte Funktion durch einen Parametervektor $\theta$ mit niedriger Dimensionaltiäöt bestemmt werden wird
+		\item Beispiel: $f(x|\theta) = N(x|\mu,\Sigma)$ mit $\theta = (\mu,\Sigma)$ d.h. wir müssen nicht mehr unendlich viele Werte aus R schätzen sondern nur noch wenige Parameter
+		\item Aufgabe: Auf Basis der Annahme der parametrischen Form $p(x|\theta_i)$ der Verteilungsfunktion $p(x|\omega_i)$ bestimme den Parametervektor $\theta_i$ mit Hilfe der Traningsdaten $D^i,t^i$
+		\item Lösungen:
+		\begin{itemize}
+			\item Maximum Likelihood (Punktschätzung)
+			\item Bayes'sch (Bestimmung der a-posteriori Verteilung von $\theta$)
+		\end{itemize}
+		\item Also: Wir haben Trainingsdaten $D = x_1,\dots,x_n$ und wir nehmen an, dass $x_k$ aus einer parametrischen Verteilung $p(x_k|\theta)$ stammen. Gesucht ist nun eine Schätzung für die wahren Parameter die am besten mit den Traningsdaten vereinaber ist
+	\end{itemize}
+	\subsection{Maximum Likelihood-Schätzer}
+	\begin{itemize}
+		\item Annahme: der Parametervektor $\theta$ hat einen wohldefinierten festen Wert der uns unbekannt ist
+		\item Maximum-Likelihood-Schätzer: $\hat{\theta} = argmax_{\theta \in \Theta} p(D|\theta$) also derjenige Wert $\hat{\theta}$ der die Likelihood der Traningsdaten maximiert, Anwendung Satz von Bayes: $p(\theta|D) = \frac{p(D|\theta)*p(\theta)}{p(D)}$
+		\item Frage: Wo kommt der her? Man erwartet eigentlich $p(\theta|D)$
+		\item Antwort: eigentlich interessiert uns $p(\theta|D)$ aber uns interessiert nicht die gesamte Verteilung sondern nur der Wert $argmax_\theta p(\theta|D)$
+		\item Annahme: Alle Werte von $\theta$ sind gleich wahrscheinlich $p(\theta) = c$
+		\item also $argmax_\theta p(\theta|D) = argmax_\theta \frac{p(D|\theta)*p(\theta)}{p(D)} = argmax_\theta \frac{p(D|\theta)*c}{c'} = argmax_\theta p(D|\theta) = \hat{\theta}_{ML}$
+		\item Gegeben:
+		\begin{itemize}
+			\item Menge von Daten: $D = x_1,x_2,\dots,x_n$
+			\item parametrische Verteilungsfunktion: $p(x|\theta)$
+			\item p-dimensionalen Parametervektor: $\theta = (\theta_1,\dots,\theta_p)^t$
+		\end{itemize}
+		\item Gesucht: $\hat{\theta}$ der $p(D|\theta)$ maximiert
+		\item Annahme: $x_k$ sind unabhängige Stichproben aus $p(x|\theta)$ d.h. es gilt: $p(D|\theta) = \prod_{k=1}^{n}p(x_k|\theta)$
+		\item Vorgehen:
+		\begin{enumerate}
+			\item Bestimme die Log-Likelihood-Funktion: $l(\theta) = log \prod_{k=1}^{n}p(x_k|\theta) = \sum_{k=1}^{n}log(p(x_k|\theta))$
+			\item Wende Gradientenoperator $\nabla_\theta = (\frac{\partial}{\partial \theta_1},\dots,\frac{\partial}{\partial \theta_p})^t$ auf $l(\theta)$ an d.h. bestimme: $\nabla_\theta l = \sum_{k=1}^{n} \nabla_\theta ln(p(x_k|\theta))$
+			\item Löse die Gleichung: $\nabla_\theta l = 0$
+			\item Lösung der Gleicung ist $\hat{\theta}$
+		\end{enumerate}
+		\item Bias: Der Erwartungswert der Schätzwerte entspricht nicht den realen Parametern. ML-Schätzer sind jedoch asymptotisch erwartungstreu
+		\item Maximum-Likelihood ist sehr einfach anzuwenden
+		\item Wenn die a-posteriori Verteilung unimodal ist, dann liefert ML Ergebnisse die ähnlich gut sind wie Bayessche Schätzung, Ml kovergiert mit $n \rightarrow \infty$ gegen die wahren Parameter
+	\end{itemize}
+	\subsection{Bayessche Parameterschätzung}
+	\begin{itemize}
+		\item Aufgabe: Bestimme $p(x|D)$ anhand einer Stichprobe D die aus einer parametrischen Verteilung $p(x|\theta)$ gezogen wurde. Dabei habe $p(x|\theta)$ eine bekannte funktionale Form, nur $\theta$ ist nicht festgelegt
+		\item Wir stellen uns $\theta$ als Zufallsvariable vor die eine a-priori-Verteilung (vorher $\theta$ unbekannt und fest jetzt unbekannt und aus einer Verteilung) $p(\theta)$ hat aus der wir eine a-posteriori-Verteilung $p(\theta|D)$ berechnen können
+		\item es ergibt sich folgende a-posteriori Verteilung für die Daten: $p(x|D) = \int p(x|\theta)p(\theta|D) \partial\theta$
+		\item Vergleich zu ML-Ansatz: $p(x|D) = p(x|\hat{\theta}_{ML})$ mit $\hat{\theta}_{ML} = arg max_\theta p(D|\theta)$
+		\item Ziel: Bestimmung der Parameterverteilung $p(\theta|D)$
+		\item Bayessche Satz: $p(\theta|D) = \frac{p(D|\theta)*p(\theta)}{\int p(D|\theta)p(\theta)\partial\theta}$ mit $p(D|\theta)$ ist Likelihood
+		\item Annahme: Unabhängigkeitsannahme für D d.h. die Merkmale hängen nicht voneinander ab es gilt also: $p(D|\theta) = \prod_{k=1}^{n}p(x_k|\theta)$
+	\end{itemize}
+\section{Dimensionsreduktion}
+	\subsection{Einführung}
+	\begin{itemize}
+		\item wenn Merkmale unabhängig sind dann lassen sich theoretisch Klassifizierer mit sehr hohrer Präzision realisieren
+		\item für zwei-Klassen-Problem $p(x|\omega_i) = N(\mu_i,\Sigma)$ der Bayes-Fehler: $P(e) = \frac{1}{\sqrt{2*\pi}}\int_{r/2}^{\infty} e^{-u^2/2} du$ mit $r^2$ ist die quadrierte Mahalanobis-Distanz
+		\item mit wachsendem r sinkt der Fehler, bei unabhängigen Merkmale ist $\Sigma = diag(\sigma_1^2,\dots,\sigma_d^2)$ 
+		\item man erhält: $r^2 = \sum_{j=1}^{d} \frac{(\mu_1^{(j)}-\mu_2^{(j)})^2}{\sigma_j^2}$ d.h. je größer d (Anzahl der Dimensionen / Merkmale) desto besser ist die Klassifikation (theoretisch, praktisch eher nicht so)
+		\item im Bayesschen Framework, wenn wir die Formen der Verteilungen kennen können wir die Anzahl der Features beliebig erhöhren und der Ansatz sorgt von selbst dass diese für irrelevante Features entsprechend gering gewichtet werden
+		\item Probleme:
+		\begin{itemize}
+			\item in hohen Dimensionen sind bereit geringe Unterschiede zwischen wahrer und angenommener Verteilung sehr groß
+			\item in hohen Dimensionen ist die Anzahl der Traningsdaten nicht mehr ausreichend um die erforderliche Anzahl der Parametern ausreichend zuverlässig zu schätzen
+		\end{itemize}
+		\item Lösung:
+		\begin{itemize}
+			\item Hauptkomponentenanalyse (PCA): Projektion in einem Raum mit reduzierter Dimensionalität die die Daten am besten repräsentiert
+			\item Fisher-Diskriminante: Projektion in einem Raum mit reduzierter Dimensionalität in der die  Daten unterschiedlicher Klassen am besten getrennt sind
+		\end{itemize}
+	\end{itemize}
+	\subsection{Hauptkomponentenanalyse}
+	\begin{itemize}
+		\item Aufgabe: reduziere die Anzahl der Dimensionen auf $q < d$
+		\item Ansatz: finde einen q-dimensionalen Teilvektorraum $E^q$ mit Basis: $E = (e_1,\dots,e_q)^t$ so dass die Projektion der $x_k$ in den Raum $E^q$ möglichst gut repräsentiert sind d.h einen minimalen quadratischen Fehler verursacht
+		\item Kriterium zu minimieren: $J(E) = \sum_{k=1}^{n}(E^t(Ex_k))-x_k)^2$
+		\item $E$ ist eine $q\times d$ Matrix die Vektoren von einem d-dimensionalen Vektorraum $E^d$ in einen q-dimensionalen Untervektorraum $E^q$ abbildet
+		\item $x'_k = Ex_k$ die Projekt einen d-dimensionalen Vektors $x_k$ in $E^q$
+		\item $x''_k = E^tx'_k$ ist die Rücktransformation des reduzierten Vektors in den ursprünglichen Vektorraum, in dem der Fehler (Distanz zwischen $x''_k$ und $x_k$) gemessen
+		\item q kann nicht größer als n sein da n Datenvektoren spannen höchstens n-dimensionalen Vektorraum auf
+		\item Vorgehen:
+		\begin{enumerate}
+			\item Berechne empirische Kovarianzmatrix $\hat{\Sigma}$
+			\item Berechne die Eigenwerte $\lambda_i$ und Eigenvektoren $e_i$ von $\hat{\Sigma}$
+			\item wähle $q<d$ Eigenvektoren zu den größten Eigenwerten als dimensionsreduzierten Merkmalsraum mit Transformationsmatrix mit $E = (e_1,\dots,e_q)^t$
+			\item Die neuen q-dimensionalen Merkmalsvektoren $x'$ ergeben sich jetzt durch die Transformation $x' = Ex$
+		\end{enumerate}
+	\end{itemize}
+	\subsection{Diskriminantenanalyse}
+	\begin{itemize}
+		\item Aufgabe: Suche eine Transformation die das Verhältnis der Varianz zwischen den Klassen zur Varianz innerhalb der Klasse maximiert
+		\item Die Transformation erzeugt Räume mit maximal $c-1$ Dimensionen da es nur c Klassen gibt, können c Klassenmittelpunkte einen Raum mit maximal $c-1$ Dimensionen aufspannen
+		\item wir definieren:
+		\begin{itemize}
+			\item Streuung innerhalb der Klassen: $S_W =\sum_{i=1}^{c}\sum_{k=1}^{n_i}(x_{ik}-\mu_i)(x_{ik}-\mu_i)^t$
+			\item Streuung zwischen den Klassen i: $S_B = \sum_{i=1}^{c}n_i(\mu_i-\mu)(\mu_i-\mu)^t$
+			\item mit $x_{ik}$ ist Datensatz k zu Klasse i, $n_i$ ist die Anzahl der Datensätze für Klasse i, $\mu$ ist der Mittelwert überalle Klassen
+		\end{itemize}
+		\item Die Determinante einer Streuungsmatrix ist ein Maß für das Raumvolumen das die zugehörigen Daten benaspruchen
+		\item Streungsverhältnis: $\frac{|S_B|}{|S_W|}$
+		\item Gesucht: Transformation $W$ in einen $q \leq c-1$ dimensionalen Raum $E^q$ so dass das Streungsverhältnis in $E^q$ maximal wird, W ist eine $q \times d$ Matrix
+		\item Lösung: Eigenwertproblem (ausgelasssen)
+	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
 
