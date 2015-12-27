@@ -488,7 +488,36 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\item Die Determinante einer Streuungsmatrix ist ein Maß für das Raumvolumen das die zugehörigen Daten benaspruchen
 		\item Streungsverhältnis: $\frac{|S_B|}{|S_W|}$
 		\item Gesucht: Transformation $W$ in einen $q \leq c-1$ dimensionalen Raum $E^q$ so dass das Streungsverhältnis in $E^q$ maximal wird, W ist eine $q \times d$ Matrix
-		\item Lösung: Eigenwertproblem (ausgelasssen)
+		\item mit $W$ gegeben: $\hat{S}_B = \sum_{i=1}^{c}n_i(W\mu_i-W-\mu)(W\mu_i-W-\mu)^t = \dots = W*S_B*W^t$ analog: $\hat{S}_W = W*S_W*W^t$
+		\item Aufgabe: minimiere $J(W) = \frac{|W*S_B*W^t|}{|W*S_W*W^t|}$
+		\item Lösung: Eigenwertproblem (ausgelasssen) lösen
+	\end{itemize}
+	\subsection{Nichtlineare Diskiminaten}
+	\begin{itemize}
+		\item Gegeben: Feature Space welcher nicht linear trennbar ist
+		\item Aufgabe: Finde einen Vektor $\phi = (\phi_1,\dots,\phi_f)$ von f (nichtlinearen) Transformationen $\phi_i(x)$ und betrachte lineare Diskriminante in f-dimensionalen Raum $E^f$
+	\end{itemize}
+\section{Nicht-parametrische Methoden}
+	\subsection{Einführung}
+	\begin{itemize}
+		\item Bisher:
+		\begin{itemize}
+			\item vollständigen Wissen über die Verteilung: Bayessche Entscheidungsregel
+			\item oder: wir kennen zumindestens die funktionale Form der Verteilung und können die Parameter der Verteilung aus den Trainingsdaten schätzen
+		\end{itemize}
+		\item Nun: Verteilungsfunktionen sind nicht bekannt
+		\item Problemstellung:
+		\begin{itemize}
+			\item Gesucht: unbekannte Verteilung $p(x)$
+			\item Gegeben: Menge von Stichproben $x_i \sim p(x)$ aus dieser Verteilung
+			\item Idee: Dichte der $x_i$ in der Nähe von $x$ verwenden um damit auf die Wahrscheinlichkeit $p(x)$ zu schließen $\rightarrow$ je dichter die $x_i$ in einer Region liegen desto wahrscheinlicher dürfte es ja sein, Werte aus dieser Region zu erhalten vorrausgesetzt $p(x)$ ist nicht bösartig zerklüftet
+		\end{itemize}
+		\item Gegeben eine Region $R \subset R^n$ im Merkmalsraum und eine Verteilungsfunktion $p(x)$
+		\item Wahrscheinlichkeit $P$ dass ein $x \in R^n$ in $R$ liegt dann: $P := Pr(x\in R) = \int_R p(x') dx'$
+		\item nun seien n Stichproben $x_1,\dots,x_n$ mit $x_i \sim p(x)$ gegeben
+		\item Wahrscheinlichkeit dass genau $k$ mit $k<n$ dieser Stichproben in R liegen: $P_k = \binom{n}{k} P^k (1-P)^{n-k}$ (binomialverteilt)
+		\item Erwartungswert: $E[k] = \sum_k k*k_k = n*P$
+		\item mit $E[k]$ lässt sich nun P umgekehrt schätzen: $P \approx \frac{k}{n}$
 	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
