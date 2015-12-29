@@ -518,7 +518,81 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\item Wahrscheinlichkeit dass genau $k$ mit $k<n$ dieser Stichproben in R liegen: $P_k = \binom{n}{k} P^k (1-P)^{n-k}$ (binomialverteilt)
 		\item Erwartungswert: $E[k] = \sum_k k*k_k = n*P$
 		\item mit $E[k]$ lässt sich nun P umgekehrt schätzen: $P \approx \frac{k}{n}$
+		\item Mit der Annahme dass $p(x)$ ist kontinuierlich und einer Umgebung von x nicht allzu stark schwanklt: Wenn V das Volumen der Region R ist dann Gilt: $k/n \approx P = \int_R p(x')dx' \approx \int_R p(x)dx' = p(x)\int_R 1dx' = p(x) = V$
+		\item damit ergibt sich: $p(x) \approx \frac{k/n}{V}$
+		\item Bedeutung: wir können $p(x)$ Abschätzen mit Hilfe einer Stichprobe der Größe n, wenn wir die Anzahl k der Samples in einer Region R um x in Relation zur Gestamtzahl zur Größe der Region V setzen
+		\item zu zeigen: der Schätzwert kann die gesuchte Wahrscheinlichkeit $p(x)$ beliebig genau approximieren wenn man n nur groß genug wählt d.h.: $p(x) = \lim\limits_{n \rightarrow \infty} \frac{k_n/n}{V_n}$ wenn man $k_n$ und $V_n$ geeignet definiert
+		\item damit $p(x) = \lim\limits_{n \rightarrow \infty} \frac{k_n/n}{V_n}$ gilt müssen folgende Bedingungen gelten:
+		\begin{itemize}
+			\item $\lim\limits_{n\rightarrow \infty} V_n  = 0$ d.h. der Fehler die Durchschnittsbilding im Raumvolumen verschwindet
+			\item $\lim\limits_{n\rightarrow\infty} = \infty$ d.h. die möglicherweise irrationale Zahl P kann durch die Anzahl der Samples in R beliebig genau approximiert werden
+			\item $\lim\limits_{n\rightarrow\infty} = 0$ mit schrumpfenden Raumvolumen sinkt auch die relative Anzahl von Treffern im Volumen
+		\end{itemize}
+		\item Zwei Ansätze:
+		\begin{itemize}
+			\item Parzen-Window-Ansatz (Kern-Dichte-Schätzer): Volumen $V_n$ in Abhängigkeit von n festlegen und dann zeigen dass Konvergenz mit $n\rightarrow\infty$ erreicht wird
+			\item k-nearest-Neighbour: Anzahl der Treffen in Abhängigkeit von n festlegen und hierfür Konvergenz zeigen
+		\end{itemize}
 	\end{itemize}
+	\subsection{Parzen Windows}
+	\begin{itemize}
+		\item Idee: um den Punkt x, dessen Wk wir bestimmen wollen, eine Testregion mit vorgegebene Volumen $V_n$ legen und dann zählen, welcher Anteil $k_n$ der Sichtprobe in dieses Volumen fällt
+		\item das Verhältnis $k_n/n$ ist dann eine Schätzung für $p(x)$: Schätzung mit n Samples: $p_n(x)$
+		\item Annahme: Testregion $R_n$ für n Stichproben ist Hyper-Cube mit Kantenlänge: $h_n$ dann gilt: $V_n = h_n^d$ d.h. Das Volumen ist die d-te Potenz der Kantenlänge (d = Dimonensionenzahl)
+		\item Vorgehen:
+		\begin{itemize}
+			\item Fensterfunktion: $\phi(u) = \begin{cases}
+			1 & |u_j| \leq 1/2; i = 1\dots,d\\
+			0 & sonst
+			\end{cases}$ (stanzt einem im Ursprung zentrierten Hyperwürfel der Kantenlänge 1 aus)
+			\item für Hyperwürfel mit kantenlänge $h_n$ zentriert um x gilt: $\phi(\frac{x-x_i}{h_n}) = \begin{cases}
+			1 & \text{falls} x_i \text{im Hyperwuerfel um x liegt}\\
+			0 & sonst
+			\end{cases}$
+			\item $x_i$ die Punkte welche sich im Hypercube befinden
+			\item Anzahl der Stichproben im Fenster: $k_n = \sum_{i=1}^{n}\phi(\frac{x-x_i}{h_n})$
+			\item es folgt aus $p_n(x) = \frac{k_n/n}{V_n}$ und $k_n$: $p_n(x) = 1/n * \sum_{i=1}^{n} \frac{1}{V_n}\phi(\frac{x-x_i}{h_n})$
+			\item $p_n(x)$ ist der Durchschnitt von n Funktionen die von x und den $x_i$ abhängen
+		\end{itemize}
+		\item Erweiterungen:
+		\begin{itemize}
+			\item $\phi(\frac{x-x_i}{h_n})$ kann unterschiedlich interpretiert werden: 1) Funktion von $x_i$ die ihren Wert in Anhängigkeit davon liefert ob $x_i$ im Fenster um $x$ liegt ($k_n$ = Anzahl der $x_i$ im Fenster um x) ODER 2) Funktion von x die ihren Wert in Abhängigkeit davon liefert ob x im Fenster um das jeweilige $x_i$ liegt ($k_n =$ Anzahl der Fenster um die $x_i$ in denen $x$ liegt)
+			\item Andere Fenster
+			\begin{itemize}
+				\item Hyperwürfel mit 1/0 Zählung erzeugt Diskontinuität d.h scharfe Kanten
+				\item besser glatte Fenster: Gewicht des Samples sinkt kontinuierlich mit der Entfernung
+				\item Betrachtung von $\phi$ als Kern (Kernel) K: für K gilt: $\forall u: K(u) \geq 0; \int K(u) du = 1; \forall u: K(u) = K(-u)$
+				\item Epanechnikov-Kern minimiert den erwarteten integrierten quadratischen Fehler zwischen geschätzter und wahrer Verteilung: $K_{ep}(u) = \begin{cases}
+				\frac{d+2}{2*c_d}(1-||u||^2) & \text{falls} ||u||^2 < 1\\
+				0 & \text{sonst}
+				\end{cases}$
+			\end{itemize}
+		\end{itemize}
+		\item Betrachtung als Faltung:
+		\begin{itemize}
+			\item $f_n(x') = \sum_{i=1}^{n} \delta(x'=x)$ d.h. eine Stichprobe wird durch $\delta$-Funktionen repräsentiert
+			\item für einen Kern definieren wir: $K_h(x,x') = \frac{1}{n*h} K(\frac{x-x'}{h})$
+			\item wir erhalten: $p_n(x) = K_h(x,x') \star f_n(x') = K_h(x,x') \star \sum_{i=1}^{n}\delta(x'=x) = \dots = \frac{1}{n*h}\sum_{i=1}^{n}K(\frac{x-x_i}{h})$
+			\item d.h. Kern-Dichte-Schätzung ist die Filterung des Signals an einem Filter mit der Impulsantwort $K_h$  
+		\end{itemize}
+		\item Flexibilität:
+		\begin{itemize}
+			\item Parzen-Window Methode kann bei jeder Art von Verteilung angewendet werden
+			\item Anzahl von Dimensionen Grenzen gesetzt: die Anzahl der erforderlichen Samples wächst exponentiell mit d d.h. $d > 3$ meist nicht mehr sinnvoll
+		\end{itemize}
+		\item Klassifikation:
+		\begin{itemize}
+			\item Bestimme $p(x|w_i)$ mit Hilfe der Parzen-Window-Methode
+			\item Ordne einen neuen Punkt diejenigen Klasse zu, die die maximale a-posteriori-Wahrscheinlichkeit hat
+			\item Seien $x_{ik},k=1,\dots,n_i$ die Samples der Klasse i
+			\item klassenbedingte Wahrscheinlichkeit $\hat{p}(x|w_i) = \frac{1}{n_i*h_i}\sum_{k=1}^{n_i}K(\frac{x-x_{ik}}{h_i})$
+			\item a-priori-Wahrscheinlichkeiten: $\hat{p}(w_i) = \frac{n_i}{n}$
+			\item Klassifikation durch: $arg max_{w_i}\hat{p}(x|w_i)\hat{p}(w_i)$
+			\item Kombination mit Naiven-Bayes-Klassifikator: Annahme dass die einzelnen Merkmale voneinander unabhängig sind: $p(x|w_j) = \prod_{i=1}^{d}p(x_i|w_j)$
+			\item hierbei sind $p(x_i|w_j)$ eindimensionale Verteilungen die sich dann auch sinnvoll mit Hilfe des Parzen-Window-Ansatzes approximieren lassen
+		\end{itemize}
+		\end{itemize}
+
 \bibliography{library}
 \bibliographystyle{plain}
 
