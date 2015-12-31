@@ -592,6 +592,33 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item hierbei sind $p(x_i|w_j)$ eindimensionale Verteilungen die sich dann auch sinnvoll mit Hilfe des Parzen-Window-Ansatzes approximieren lassen
 		\end{itemize}
 		\end{itemize}
+	\subsection{k Nearest Neighbours}
+	\begin{itemize}
+		\item Dichteschätzung:
+		\begin{itemize}
+			\item Ansatz: $p(x) = \frac{k}{n*V}$
+			\item Kern-Dichte-Schätzer: Volumenfest bestimmt durch h
+			\item k Nearest Neighbours: k wird festgelegt und Volumen wird so lange vergrößert bis k Samples gefunden wurden
+			\item man kann zeigen dass wenn man $k_n$ langsamer wachsen lässt als n, die erzeugten Volumen $V_n$ gegen 0 konvergieren: $p_n(x) = \frac{k_n}{n*V_n} \approx p(x)$ mit $\lim\limits_{n\rightarrow \infty} p_n(x) = x$
+		\end{itemize}
+		\item $p_n(x) = \frac{k_n}{n*V_n} \approx p(x)$ in der Praxis 
+		\begin{itemize}
+			\item sei $n = 1$. Es gibt also genau 1 Sample $x_1$ und wir haben $k_n = \sqrt{n} = 1$
+			\item gegeben sei ein Testpunkt x
+			\item Das kleinste Volumen $k_1$, des kleinstenm Hyperwürfels mit Zentrum x, in der wir gerade noch $x_1$ finden? $2|x-x_1|$
+			\item daraus ergibt sich eine sehr schlechte Schätzung: $p_1(x) = \frac{1}{2|x-x_1|}$
+		\end{itemize}
+		\item Verhalten für k-NN Dichteschätzung: für ein n kann die k-NN Dichteschätzung ziemlich stachelig sein
+		\item Klassifikation
+		\begin{itemize}
+			\item n Samples $x_i$ aus c Klassen
+			\item suchen k nächsten Samples in der Umgebung eines Punktes x
+			\item $k_j$ Anzahl der Samples aus k welche zur Klasse $w_j$ gehören ($\sum_{j=1}^{c}k_j = k$)
+			\item mit $\hat{p}(x,w_j) = \frac{k_j}{n/V}$ erhalten wir: $\hat{P}(w_j|x) = \frac{p(x,w_j)}{p(x)} = \frac{k_j}{k}$ alsop der Stimmanteil für $w_j$ relativ zur Gesamtanzahl der Stimmen $k$
+			\item Klassifikation nach: $argmax_{w_j}\hat{P}(w_j|x)$
+			\item Um einen Punklt x zu klassifizieren: Bestimme die k nächstliegenden Trainingspunkte $x_i$ und weise x diejenige Klasse zu, die unter diesen k Punkten am häufigsten Auftritt
+		\end{itemize}
+	\end{itemize}
 
 \bibliography{library}
 \bibliographystyle{plain}
