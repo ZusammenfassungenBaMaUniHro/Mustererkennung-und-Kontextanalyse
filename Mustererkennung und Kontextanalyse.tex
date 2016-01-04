@@ -619,7 +619,64 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item Um einen Punklt x zu klassifizieren: Bestimme die k nächstliegenden Trainingspunkte $x_i$ und weise x diejenige Klasse zu, die unter diesen k Punkten am häufigsten Auftritt
 		\end{itemize}
 	\end{itemize}
-
+\section{Support Vector Machines}
+	\subsection{Einführung}
+	\begin{itemize}
+		\item Geg: Zwei Klassen in einem Merkmalsraum mit nichtlinearer Trennbarkeit
+		\item Lösung: Transformation in einen höherdimensionalen Merkmalsraum
+		\item Allg. die Transformation ist unbekannt welche eine lineare Trennbarkeit erreicht
+		\item Schrotflinten-Verfahren: Wähle eine geeignete Menge von Basisfunktion und probiere rum :D
+		\item Wie findet man einen geeigneten Satz von Transformation $\phi: R^d \rightarrow R^f$
+		\item Wie findet man eine für die transformierte Punktemenge eine geeignete lineare Entscheidungsgrenzen im $R^f$?
+		\item Wie sorgt man dafür dass die Klassifikationkomplexität...?
+	\end{itemize}
+	\subsection{Entscheidungsgrenzen}
+	\begin{itemize}
+		\item gegeben eine Transformation $\phi: R^d \rightarrow R^f$ und Trainingsdaten und Klassenzugehörigkeit
+		\item gesucht lineares Modell: $y(x) = w^t\phi(x)+b$ so dass die Ebene $y(x) = 0$ die beiden Klassen trennt
+		\item Gesucht wird als für gegebene $x_i$ eine möglichst gute Trenngrenze
+		\item Wir suchen diejenige Ebene $y(x) = 0$ die den Abstand zu den jeweils am nächsten liegenden Punkten beider Klassen maximiert
+		\item Diejenige Punkte die der Ebene $y(x) = 0$ am nächsten liegen stützen die Ebene ab $\rightarrow$ Stützvektoren
+		\item Mathematisch: Gesucht $y(x) = w^t\phi(x)+b = 0$ die den minimalen Abstand der Punkte zu ihr maximiert also de Lösung für: $argmax_{w,b}(\frac{1}{||w||}min_i(t_i(w^t\phi(x_i)+b)))$
+		\item Problem: schwieriges Optimierungsproblem
+		\item Lsg: Umwandlung in ein einfacheres
+		\item Beobachtung: Wenn wir von gegebenen w,b zu skalierten Werten k*w und k*b übergehen ändert sich das Ergebnis nicht (???FORMEL???)
+		\item für gegebenes w,b finden wir also immer ein k so dass ür die skalierte Lösung (???FORMEL??) $= \frac{1}{||w'||}$ gilt
+		\item Ansatz: suche einfach k so dass gilt: (???FORMEL???) $=1$ gilt: wir benennen $w'$ und $b'$ um in w und b
+		\item für die der optimalen Entscheidungsgrenze am nächsten liegen gilt: $t_i(w^t*\phi(x_i)+b) = 1$
+		\item Für alle Punkte fordern wir also: $t_i(w^t*\phi(x_i)+b) \geq 1$ (kanonische Repräsentation der Entscheidungsgrenze)
+		\item Punkte mit Wert = 1 sind aktive Punkte
+		\item Vereinfachtes Optimierungsproblem: $argmax_{w,b}(\frac{1}{||w||}min_i(t_i(w^t\phi(x_i)+b))) = argmax_{w,b} \frac{1}{||w||}$ und die kanonische Repräsentation erfüllt
+		\item Statt $\frac{1}{||w||}$ zu maximieren können wir auch $||w||^2$ minimieren d.h. die suchen $argmin_{w,b} \frac{1}{2}||w||^2$ + Nebenbedingungen
+		\item Problem: quadratische Programmierung d.h. Konvexe Problemstellung besitzen ein globales Minimum
+	\end{itemize}
+	\subsection{Lagrange-Multiplikatoren}
+	\begin{itemize}
+		\item gegeben Funktion $f(x)$ die wir optimieren wollen und eine Bedingung $g(x) = 0$ die erfüllt werden muss
+		\item $\nabla_x f(x) + \lambda\nabla_x g(x) = 0$. Man bezeichnet $\lambda$ als Lagrange-Multiplikator
+		\item erweiterte Funktion: $L(x,\lambda) = f(x) + \lambda g(x)$
+		\item Optimum muss gelten: $\nabla_x L(x,\lambda) = 0$ sowie $\nabla_\lambda L(x,\lambda) = g(x) = 0$
+		\item Wie mit Ungleichungen?
+		\begin{enumerate}
+			\item Optimum liegt innerhalb des Constraintbereichs also $g(x_B) > 0$ und Gradient von g spielt keine Rolle also $\lambda = 0$
+			\item Optimum liegt auf dem Constraint also $g(x_A) = 0$ und Gradient ist antiparallel zum Gradient von f d.h. $\nabla f(x) = -\lambda\nabla g(x)$ für $\lambda > 0$
+		\end{enumerate}
+	\end{itemize}
+	\subsection{Bestimmung der Entscheidungsgrenze}
+	\begin{itemize}
+		\item Die Formulierung mit Lagrange-Multiplikatoren $a_i \geq 0$ für die Nebenbedingung ergibt sich zu: $L(w,b,a) = \frac{1}{2}||w||^2 - \sum_{i=1}^{n}a_i (t_i(w^t\phi(x_i)+b)-1)$
+		\item Minuszeichen weil wir in Bezug auf w und b minimieren
+		\item Ableitungen:
+		\begin{itemize}
+			\item $w = \sum_{i=1}^{n} a_i t_i \phi(x_i)$ (verbraucht den $1/2$ Faktor)
+			\item $0 = \sum a_i*t_i$
+		\end{itemize}
+		\item Ableitung einsetzen um w und ?? zu eliminieren
+		\item neuen Problem: $\hat{L}(a) = \sum a_i - \frac{1}{2}\sum_i\sum_j a_ia_jt_it_jk(x_i,x_j)$ mit $a_i \geq 0$ und $\sum_i a_it_i = 0$
+		\item Die Kerne $k(x_i,x_j)$ sind hierbei definiert durch $k(x,x') = \phi(x)^t\phi(x')$
+		\item Wenn wir das duale Optimierungsproblem gelöst haem erhalten für die $a_i$ über die sich dann auch b bestimmen lässt
+		\item Klassifikation über: $y(x) ) = w^t\phi(x)+b$
+	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
 
