@@ -640,9 +640,9 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\item Mathematisch: Gesucht $y(x) = w^t\phi(x)+b = 0$ die den minimalen Abstand der Punkte zu ihr maximiert also de Lösung für: $argmax_{w,b}(\frac{1}{||w||}min_i(t_i(w^t\phi(x_i)+b)))$
 		\item Problem: schwieriges Optimierungsproblem
 		\item Lsg: Umwandlung in ein einfacheres
-		\item Beobachtung: Wenn wir von gegebenen w,b zu skalierten Werten k*w und k*b übergehen ändert sich das Ergebnis nicht (???FORMEL???)
-		\item für gegebenes w,b finden wir also immer ein k so dass ür die skalierte Lösung (???FORMEL??) $= \frac{1}{||w'||}$ gilt
-		\item Ansatz: suche einfach k so dass gilt: (???FORMEL???) $=1$ gilt: wir benennen $w'$ und $b'$ um in w und b
+		\item Beobachtung: Wenn wir von gegebenen w,b zu skalierten Werten k*w und k*b übergehen ändert sich das Ergebnis nicht d.h $\frac{t_i(w^t\phi(x_i)+b)}{||w||} = \frac{t_i((k*w)^t\phi(x_i)+k*b)}{||k*w||}$
+		\item für gegebenes w,b finden wir also immer ein k so dass ür die skalierte Lösung $\frac{t_i((k*w)^t\phi(x_i)+k*b)}{||k*w||} = \frac{t_i(w'^t\phi(x_i)+b')}{||w'||} = \frac{1}{||w'||}$
+		\item Ansatz: suche einfach k so dass gilt:$t_i(w'^t\phi(x_i)+b') = t_i((k*w)^t\phi(x_i)+k*b)=1$ gilt: wir benennen $w'$ und $b'$ um in w und b
 		\item für die der optimalen Entscheidungsgrenze am nächsten liegen gilt: $t_i(w^t*\phi(x_i)+b) = 1$
 		\item Für alle Punkte fordern wir also: $t_i(w^t*\phi(x_i)+b) \geq 1$ (kanonische Repräsentation der Entscheidungsgrenze)
 		\item Punkte mit Wert = 1 sind aktive Punkte
