@@ -675,7 +675,40 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\item neuen Problem: $\hat{L}(a) = \sum a_i - \frac{1}{2}\sum_i\sum_j a_ia_jt_it_jk(x_i,x_j)$ mit $a_i \geq 0$ und $\sum_i a_it_i = 0$
 		\item Die Kerne $k(x_i,x_j)$ sind hierbei definiert durch $k(x,x') = \phi(x)^t\phi(x')$
 		\item Wenn wir das duale Optimierungsproblem gelöst haem erhalten für die $a_i$ über die sich dann auch b bestimmen lässt
-		\item Klassifikation über: $y(x) ) = w^t\phi(x)+b$
+		\item Klassifikation über: $y(x) = w^t\phi(x)+b$
+		\item Wenn wir das gefundene $w$ einsetzen mit $w = \sum_{i=1}^{n}a_it_i\phi(x_i)$ ergibt sich: $y(x) =\sum_{i=1}^{n}a_it_i\phi(x_i)^t\phi(x_i) +b = \sum_{i=1}^{n}a_it_ik(x_i,x)+b$
+		\item Optimierungsproblem ist definiert durch:
+		\begin{itemize}
+			\item Funktion: $\bar{L}(a) = \sum_{i=1}^{n}a_i-1/2\sum_{i=1}^{n}\sum_{j=1}^{n}a_ia_jt_it_jk(x_i,x_j)$
+			\item Krush Kuhn-Tucker-Bedingungen:
+			\item $a_i \geq0$
+			\item $t_iy(x_i) -1 \geq 0$
+			\item $a_i\{t_iy(x_i)-1\} = 0$
+		\end{itemize}
+		\item für den Punkt $x_i$ gilt also entweder $a_i = 0$ oder $t_iy(x_i) = 1$ d.h. entweder der Punkt spielt in der Klassifikation keine Rolle ODER er hat den minimalen Abstand zur Entscheidungsebene (Stützvektor)
+		\item wenn wir einen Wert a haben dann können wir b ermitteln
+		\item für einen Stützvektor $x_j$ gilt:
+		\begin{itemize}
+			\item $t_jy(x_j) = 1$
+			\item also $t_j(\sum_{i \in S}^{n}a_it_ik(x_i,x_j)+b) = 1$
+		\end{itemize}
+		\item S die Menge der Indizes der Stützvektoren ($a_i$ der anderen Vektoren sind ja ohehin 0)
+		\item numerisch stabilere Lösung: Durchschnitt der b Werte über alle Stützvektoren
+	\end{itemize}
+	\subsection{Kerne und Dimensionen}
+	\begin{itemize}
+		\item Was bedeutet $\hat{L}(a) = \sum_{i=1}^{n}a_i-1/2\sum_{i=1}^{n}\sum_{j=1}^{n}a_ia_jt_it_jk(x_i,x_j)$?
+		\item Ein Kern misst die Ähnlichkeit zweier Vektoren
+		\item um $\hat{L}$ zu maximieren, müssen wir ähnliche $x_i,x_j$ finden die unterschiedliche Klassen angehören $t_it_j = -1$ und diese mit großen $a_i,a_j$ wichten
+		\item Diese erhöhen den Wert von $\hat{L}$ da die Summe mit negativen Vorzeichen in die Maximierung eingeht
+		\item $w = \sum_{i=1}^{n}a_it_i\phi(x_i)$ bedeutet dann
+		\item die Summe kann in zwei Teile zerlegt werden: die Summe der Klassen $t_{i} = 1$ und die Summe der Klasse $t_{i} = -1$: $w = \sum_{i\in t_{i} = 1} a_i\phi(x_{i})-\sum_{j \in t_{i} = -1} a_{j}\phi(x_{j})$
+		\item w ist die Differenz des gewichteten Durchschnitss beider Klassen, bestimmt für die interessanten Vektoren
+		\item Quadratische Optimierung mit M Variablen haben eine Komplexität von $O(M^3)$
+		\item in der dualen Formulierung haben wir n Variablen die $a_i$. Also haben wir so viele Variablen wie Datenpunkte
+		\item ursprünglich hatten wir f Variablen (die Komponenten von w), so viele wie Dimensionen in $R^f$
+		\item wenn wir eine feste kleine Zahl f von Basisfunktionen haben bringt der Übergang in die duale Formulierung keinen großen Gewinn
+		\item erhebliche Vorteile wenn die Merkmalsräume betrachten deren Dimensionalität die Anzahl der Datenpunkte übersteigt (Extrem: unendlich viel Dimensionen)
 	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
