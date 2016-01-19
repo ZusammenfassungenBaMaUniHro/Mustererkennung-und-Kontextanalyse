@@ -703,12 +703,69 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\item Diese erhöhen den Wert von $\hat{L}$ da die Summe mit negativen Vorzeichen in die Maximierung eingeht
 		\item $w = \sum_{i=1}^{n}a_it_i\phi(x_i)$ bedeutet dann
 		\item die Summe kann in zwei Teile zerlegt werden: die Summe der Klassen $t_{i} = 1$ und die Summe der Klasse $t_{i} = -1$: $w = \sum_{i\in t_{i} = 1} a_i\phi(x_{i})-\sum_{j \in t_{i} = -1} a_{j}\phi(x_{j})$
-		\item w ist die Differenz des gewichteten Durchschnitss beider Klassen, bestimmt für die interessanten Vektoren
+		\item w ist die Differenz des gewichteten Durchschnitts beider Klassen, bestimmt für die interessanten Vektoren
 		\item Quadratische Optimierung mit M Variablen haben eine Komplexität von $O(M^3)$
 		\item in der dualen Formulierung haben wir n Variablen die $a_i$. Also haben wir so viele Variablen wie Datenpunkte
 		\item ursprünglich hatten wir f Variablen (die Komponenten von w), so viele wie Dimensionen in $R^f$
 		\item wenn wir eine feste kleine Zahl f von Basisfunktionen haben bringt der Übergang in die duale Formulierung keinen großen Gewinn
 		\item erhebliche Vorteile wenn die Merkmalsräume betrachten deren Dimensionalität die Anzahl der Datenpunkte übersteigt (Extrem: unendlich viel Dimensionen)
+		\item Wie können wir mit unendlich vielen Dimensionen rechnen?
+		\item $\hat{L}(a) = \sum_{i=1}^{n} a_i - 1/2 \sum_{i=1}^{n}\sum_{j=1}^{n}a_ia_jt_it_jk(x_i,x_j)$ und $y(x) = \sum_{i=1}^{n} a_it_ik(x_i,x)+b$ ... wir können $R^f$ als Skalarproddukt zweier transformierter Vektoren repräsentieren durch den Kern: $k(x,x') = \phi(x)^t*\phi(x')$
+		\item d.h. wir können das Skalarprodukt berechnen ohne das Bild der Transformation $\phi(x)$ in $R^f$ selbst bestimmen zu müssen
+		\item Beispiele:
+		\begin{itemize}
+			\item Polynome mit Grad f: $k(x,x') = (1+x^tx')^f$
+			\item Radiale Basisfunktion (gaußsche Basis): $k(x,x') = exp(- ||x-x'||^2/2\sigma^2))$
+			\item Logistischer Sigmoid: $k(x,x') = tanh(k_1*x^tx'+k_2)$
+		\end{itemize}
+		\item Die Skalarprodukte $x^tx'$ und Abstände $||x-x'||$ werden jeweils im ursprünglichen d-dimensionalen Merkmalsraum $R^d$ berechnet
+	\end{itemize}
+	\subsection{Überlappende Entscheidungsgrenzen}
+	\begin{itemize}
+		\item Bisher: Annahme dass Punkte perfekt linear separierbar in $R^f$ sind
+		\item Jetzt: Führe zusätzliche Schlupfvariablen $v_i \geq 0$ die das Eindringen von $x_i$ in die verbotene Zone beschreiben
+		\item Ziel: Minimierung einer modifizierten Zielfunktion: $C \sum_{i=1}^{n}v_i +1/2*||w||^2$; $C > 0$ steuert den Kompromiss zwischen der Strafe durch die Schlupfvariablen und der Komplexität der Entscheidungsfläche
+		\item $v_i = 0$ für alle $x_i$ ausserhalb des Randbereiches bzw. auf dem Rand
+		\item $v_i < 1$ für Punkte hinnerhalb des Randbereiches aber auf der richtigen Seite
+		\item $v_i > 1$ falls Punkt auf der falschen Seite
+		\item falls $v_i > 0$ gilt also $v_i = |t_i - y(x_i)$
+		\item Anpassung der Bedingung $t_iy(x_i) \geq 1$ durch Bedingung: $t_iy(x_i) \geq 1 -v_i$
+		\item Die Summe der $v_i$ ist eine Strafe für die Verletzung des Randbereiches. je größer ein $v_i$ desto größer die Verletzung
+		\item in der Zielfunktion muss jetzt nicht nur $||w||^2$ minimiert werden sondern auch die Strafe
+		\item Ziel: min $C\sum_{i=1}^{n}v_i + 1/2 ||w||^2$
+		\item da für jeden falschen klassifizierten Punkt gilt $v_i > 1$ stellt $\sum_{i=1}^{n}v_i$ eine Obergrenze für die Anzahl der falsch klassifizierten Punkte da
+		\item C ermöglicht es den Kompromiss zwischen Verletzung des Randbreichs un Komplexitäöt der Entscheidungsgrentze zu wählen
+		\item je größer C desto größer wird die Bedeutung $v_i$ desto größer wird tendenziell $||w||$ um $v_i$ klein zu halten
+		\item je größer $||w||$ desto enger umkurvt die Entscheidungsgrenze die Stützvektoren
+		\item bester Wert für C wird sinnvollerweise wieder durch Kreuzvalidierung bestimmt
+		\item Parameter für SVM:
+		\begin{itemize}
+			\item C
+			\item Form des Kerns
+			\item Parameter des Kerns
+		\end{itemize}
+		\item Überanpassung erkennt man an einem schmalen Randbereich (großes w) und einer großen Anzahl der Stützvektoren
+		\item groß ist problemabhängig
+	\end{itemize}
+	\section{Nichtmetrische Methoden: Bäume}
+	\subsection{Einführung}
+	\begin{itemize}
+		\item Bisher: Klassifikationsferfahren brauchten eine Metrik
+		\item Problem: Nominalskalen haben keine Metrik (Abstandsbegriff)
+		\item Häufig liegen Daten zu Objekten als Eigenschaftslisten vor; Eigenschafte haben keinen Abstandsbegriff
+		\item Lösung: Klassifikation durch Entscheidungsbaum
+		\item Abstieg von Wurzel in die Blätter; jeder Knoten überprüft ein Merkmal
+		\item Vorteil: sehr leicht interpretierbar d.h. Grund für Klassifikation direkt klar da die Merkmalsausprägungen im Muster die Konjunktion der Eigenschaftsbelegungen entlang des Pfades zu Klassifikation erfüllt
+	\end{itemize}
+	\subsection{Aufbau von Bäumen}
+	\begin{itemize}
+		\item Betrachte $A \subset D$ der Testdaten
+		\item Wenn alle Instanzen in A derselben Klasse $w_A$ angehören ist die Teilmenge rein, dann kann ein Blattknoten angelegt werden der der Klasse $w_A$ zugeordnet wird
+		\item Wenn die Instanzen in A unterschiedlichen Klassen angehören muss eine Entscheidungs getroffen werden
+		\begin{itemize}
+			\item Trotzdem Blattknoten anlegen und Klassifikation gemäß der Mehrheit
+			\item inneren Knoten anlegen und A in mehere Teilmengen $A_j$ aufspalten; Rekursives Verfahren auf $A_j$
+		\end{itemize}
 	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
