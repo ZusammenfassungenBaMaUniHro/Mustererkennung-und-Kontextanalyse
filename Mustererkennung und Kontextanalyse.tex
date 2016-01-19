@@ -1,4 +1,4 @@
- \documentclass{article} %A4
+\documentclass{article} %A4
 \usepackage[a4paper,left=1.9cm, right=2.1cm,top = 1.2cm,bottom=2.3cm]{geometry}
 \usepackage[utf8]{inputenc}%Umlaute
 \usepackage[ngerman]{babel} %Texttrennung
@@ -766,6 +766,137 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 			\item Trotzdem Blattknoten anlegen und Klassifikation gemäß der Mehrheit
 			\item inneren Knoten anlegen und A in mehere Teilmengen $A_j$ aufspalten; Rekursives Verfahren auf $A_j$
 		\end{itemize}
+		\item Anzahl der Verzweigung
+		\begin{itemize}
+			\item Sollte man eine Eigenschaft mit n Ausprägungen mit meiner n-Wege Verzweigung teilen?
+			\item im allgemeinen werden dadurch die Daten aber zu stark fragmentiert wodurch eine sinnvolle Zerlegung behindert wird
+			\item eine n-Wege-Zerlegung kann durch mehere binäre Zerlegungen repräsentiert werden deshalb wird dieser Ansatz oft bevorzugt
+		\end{itemize}
+		\item Auswahl der Eigenschaft
+		\begin{itemize}
+			\item Eigenschaft für die Zerlegung ob diese eine Kombination aus meheren Merkmalen (polytetisch) oder nur ein Merkmal(monothetisch) beinhalte
+			\item monothetische Eigenschaften zerlegen den Merkmalsraum in Regionen deren Grenzen Hypereben sind die Orthogonal zu den jeweils gewählten Merkmalsdimensionen liegen
+		\end{itemize}
+	\end{itemize}
+	\subsection{Reinheit von Knotens}
+	\begin{itemize}
+		\item Grundlegendes Prinzip der Merkmalsauswahl ist möglichst einfache Bäume zu erzeugen (flach und wenige Knotens) (vergleiche Ockhams Rasiermesser)
+		\item um dies zu erreichen wählen wir in jedem Knoten N diejenige Eigenschaft T, welche die Reinheit der Kinderknoten maximiert
+		\item Unreinheit eines Knoten definiert durch die Durchmischtheit der dem Knoten zu geordneten Daten in Bezug auf ihre Klassenzugehörigkeit $\rightarrow$ einfacher definiert als die Reinheits
+		\item die Unreinheit eines Knoten N bezeichnen wir als $i(N)$
+		\item für Reinheitsmaße $i(N)$ soll gelten:
+		\begin{itemize}
+			\item $i(N) = 0$ falls deer Knoten rein ist
+			\item $i(N)$ um so größer je stärker der Knoten durchmischt
+		\end{itemize}
+		\item ein Ansatz für Unreinheit: Informationen die wir brauchen um zu einer Instanz $x \in N$ die zugehörige Klasse zu bestimmen
+		\item Wie viel Information brauchen wir falls N ein gemischter Knoten ist in dem die einzelnen Klassen i mit relativen Häufigkeiten $p_i$ enthalten sind und man uns sagt dass $x \in N$ zu Klasse $j$ gehört? $log_2 \frac{1}{p_j} = -log_2(p_j)$ Bits
+		\item Insgesamt ergibt damit der Erwartungswert der Information (Informationsentropie): $i(N) = -\sum_{i=1}^{c}p_i log_2 p_i$
+		\item Basis für die Auswahl einer Zerlegung ist dann die Suche nach einer Eigenschaft T, die zwei Kindknoten $N_L,N_R$ erzeugt die die Unreinheit soweit wie möglich minimiert
+		\item für Informationsentropie: eine Zerlegung die so wenig wie möglich zusätzliche Information erforderlich macht um die Klasse einer Instanz zu bestimmen die im Teilbaum von N liegt (ein Test T der möglichst viel Information liefert)
+		\item Annahme: haben Zerlegung bei der ein Anteil von $P_L$ Instanzen im linken Kindknoten $N_L$ landet und ein Anteil von $(1-P_L)$ Instanzen im rechten Kindknoten $N_R$
+		\item Renheitsgewinn: $\delta i(N) = i(N)-P_Li(N_L)-(1-P_L)i(N_R)$
+		\item Maximierung des Reinheitsgewinn durch die sinnvolle Wahl der Eigenschaft T mit deren Hilfe die Zerlegung durchgeführt wird (Wenn Informationsentropie als Maß der Unreinheit repräsentiert $\delta i(N)$ den Gewinn an Informationen in Bits
+		\item weitere Reinheitsmaße:
+		\begin{itemize}
+			\item $i_{gini}(N) = \sum_{i=1}^{c}p_i(1-p_i)$: Gini-Index ist der erwartete Fehler wenn man einer zufälligen Instanz aus N ein zufälligesLabel aus N zuweist. Gini-Index als Maß der Varianz der Zufallsstichprobe in Ns
+			\item $i_{bayes}(N) = 1 - max_i p_i$: Ist der Bayes-Fehler für die Klassifikation einer Instanz auf BAsis der Stichprobe iN
+		\end{itemize}
+		\item unterschiedliche Reinheitsmaße für die Optimierung unterschiedlicher Kriterien
+		\begin{itemize}
+			\item Informationentropie: Mittlere Information in Bits die erforderlich ist um eine Instanz im Knoten zu klassifizieren
+			\item Gini-Index: Varianz der Stichprobe in n (bzgl der Verteilungsfunktion der Klassenlabel)
+			\item Bayes: Fehler bei Klassifikation gemäß der Bayes-Regels
+		\end{itemize}
+		\item Differenzierbarkeit von Gini und Entropie hilfreich wenn das Maximum über einen kontinuierlichen Parameterrraum bestimmt werden muss
+		\item Gini und Entropie reagieren sensitiver auf Änderungen der Klassenverteilungen in den Knoten in Folge eines Splits
+	\end{itemize}
+	\subsection{Eigenschaften und Attribute}
+	\begin{itemize}
+		\item Split einer Instanzmenge A wird durch eine Eigenscahft T(x) definiert aus der sich dann die Teilmengen ergeben
+		\item bevorzugt binäre Splits mit boolschen Funktion T(x)
+		\item für die Teilmenge des Splits: $A_L = \{x\in A|T(x)\},A_R = \{x\in A|\neg T(x)\}$
+		\item binäre Splits: Vorteil eindimensionales Optimierungsproblem, n-äre Splits müssen höherdimensionale Optimierungsprobleme lösens
+		\item wie kann T sinnvoll definiert werden $\rightarrow$ hängt von den Skalenniveau ab
+		\item metrische Attribute: $x_i$ sucht man typischerweise eine Konstante $s$ so dass ein Test die Form $x_i < s$ annimmt
+		\item Idee: optimierende Funktion $\delta i(N)$ als Funktion von s dar und kann dann numerische Optimierungsverfahren verwenden um s zu bestimmen das den maximalen Gewinn liefert
+		\item Idee geht auch für Kombination von realwertigen Attributen $\rightarrow$ Split beschreibt eine Hypereben im Teilraum
+		\item man kann auch die nach Merkmal sortierte Liste der Instanzen betrachten um Schnittpunkte s der Form $x_l < s < x_u$ zu bestimmen $\rightarrow$ wahl durch den Mittelwert, gewichteten Durchschnitt $(1-P)x_l+Px_u$ wobei P die Wahrscheinlichkeit dafür angibt dass ein Muster im linken Bereich liegt
+		\item ordinale Attribute: Durchmusterung einer ach Attributwert sortierten Liste von Instanzen anwendbar
+		\item nominale Attribute: jede Zerlegung der Menge der Attributwerte in zwei Teilmengen als Schnittpunkt betrachtet $\rightarrow$ b Attributewerte sind $2^{b-1}$ mgl Zerlegung (erheblicher Aufwand)
+		\item man könnte ordinale Attribute direkt für die Zerlegung von A in b Teilmegen (b-Wege-Splitss) nutzen: Reinheitsgewinn: $\Delta i(N) = i(N) - \sum_{k=1}^{b} P_k i(N_k)$s mit $P_k$ der Anteil der Instanzen ist, bei denen das Attribut den k-ten Attributwert
+		\item Nachteil: Splits mit großem b bevorzugt auch wenn sie keine sinnvolle Struktur in den Daten repräsentieren (2 Klassen aber 3 Wege
+		\item dehalb muss der Reinheitsgewinn für den Split relativ zur Menge an Informationen betrachtet werden die schon on der Struktur der Aufteilung selbst enthalten $\Delta_b i(N) = \frac{\Delta i(N)}{-\sum_{k=1}^{b} P_k log_2 P_k}$
+		\item Split sind nur lokale Operationen und erzeugen nur ein lokales Optimum ohne sich für die globalen Auswirkungen zu berücksichtigen $\rightarrow$ Baum entspricht nicht dem globalen Optimum
+	\end{itemize}
+	\subsection{Ende des Wachstum}
+	\begin{itemize}
+		\item Wie lang wächst ein Baum?
+		\item Extrem: so lange bis jedes Blatt nur eine Instanz enthälts
+		\item Nachteile:
+		\begin{itemize}
+			\item Baum sehr groß
+			\item Baum hat Trainingsdaten auswendig gelernt $\rightarrow$ je größer der Baum desto eher enthält Tests die sich auf verrauschte Merkmale beziehen
+		\end{itemize}
+		\item Ziel: Performance des Baumes überprüfen mit einem Testdatensatz
+		\item Validierungsverfahren / Lösungens
+		\begin{itemize}
+			\item Aufspaltung der Daten für Training und zum Testen, solange Baum neue Ebene generieren bis die Validierung ein Wiederabsinken der Klassifikationsgenauigkeit anzeigt
+			\item Schwellwert $\beta$ für den Reinheitsgewinn festlegen $\rightarrow$ Knoten wird nur gesplittet wernn der Reinheitsgewinn größer als dieser Schwellwert $\Delta i(N) > \beta$ (Vorteil: alle Daten stehen für das Training zur Verfügung)
+			\item Festlegung dass jedes Blatt mindestens n Instanzen oder einen relativen Anteil von p aller Trainingsdaten enthalten muss
+			\item globales Abbruchkritierum: $\alpha*size + \sum_{leaf nodes} i(N)$, size ein Maß für die Größe des Baumes $\rightarrow$ Baum wächst solange bis die gewichtete Summe aus Komplexität des Baumes und restlicher Unreinheit eine bestimmte Größe erreicht hats, Kompromiss zwischen der Komplexität des Baums und dem restlichen Klassifikationsfehler möglich (Problem: $\alpha$ sinnvoll festzulegen)
+			\item Signifikanztets verwenden um zu prüfen ob ein Split eine statistisch signifikate Verbesserung der Reinheit erzeugt (Chi-Square-Test); Problem: Wachstum kann zu früh beendet werden da nicht vorrausschauend; Lösung: Pruning
+		\end{itemize}
+	\end{itemize}
+	\subsection{Zurückschneiden}
+	\begin{itemize}
+		\item Horizont-Effekt vermeiden dem umgekehrten Weg wählen: Baum bis maximale Größe wachsen lassen und danach den Baum durch Vereinen benachbarte Knoten auf eine sinnvolle Größe zurückschneiden lassen
+		\item Reduced Error Pruning
+		\begin{itemize}
+			\item Zerlegung der Daten in Trainingsdaten und Validierungsdaten
+			\item Erzeuge maximalen Baum für Traningsdaten
+			\item für jeden Knoten Prüfe Performance für Validierungsdaten unter Bedingung das der Teilbaum an diesem Knoten gelöscht wird
+			\item Lösche denjenigen Knoten+Teilbaum für den die Performance maximiert wird
+			\item Ersetze den Knoten durch ein Blatt mit der Mehrheitsklassifikation des gelöschten Teilbaum
+			\item Ende wenn Präzision für Validierungsdaten sinkt
+		\end{itemize}
+		\item Cost Complexity Pruning
+		\begin{itemize}
+			\item Maß für Gesamtkomplexität des Baums als gewichtete Summe von Größe und Restunreinheit,
+			\item $|T|$ die Anzahl der Blätter eines Baumes T
+			\item Gesamtkomplexität: $C_\alpha(T) = \alpha|T| + \sum_{m=1}^{|T|}N_m i(m)$ mit $N_m$ die Anzahl der Instanzen im Blatt m ist
+			\item aus Maximalen Baum wird eine Sequenz immer kleinerer Bäume erzeugt in dem jeweils derjenige innere Knoten kollabiert wird der das Anwachsen von: $\sum_{m=1}^{|T|}N_m i(m)$ minimiert
+			\item finden von $\alpha$ erfolgt mit Hilfe eines Validierungsansatzen, wähle $\hat{\alpha}$ mit dem das beste Ergebnis für einen separaten Testdatensatz erreicht wird
+		\end{itemize}    
+		\item Regelansatz (C4.5)
+		\begin{itemize}
+			\item Pfad von Wurzel zu Blatt als Regel darstellen: Konjunktion aller Eigenscahften
+			\item Regeln können unabhängig voneinander durch Löschen von Vorbedingungen beschnitten erden so dass die Präzision verbessert
+			\item resultierende Regelmenge wird dann in der Reihenfolge der geschätzten Präzision sortiert
+			\item für unterschiedliche Pfade kann unterschiedlich beschnitten werden ohne eine Reorganisation des Baumes erforderlich ist
+		\end{itemize}
+	\end{itemize}
+	\subsection{Klassifikation}
+	\begin{itemize}
+		\item reine Blätter erhalten das homogene Klassenlabel der ihrer Instanzen
+		\item unreine Blätter erhalten das Klassenlabel der Mehrheit
+	\end{itemize}
+	\subsection{Wahl der Attribute}
+	\begin{itemize}
+		\item Es ist hilfreich wenn die Attribute gut gewählt werden, so dass die Tests im Baum auch senkrecht zu den effektiven Attributdimensionen sind (Vorverarbeitung durch PCA)
+	\end{itemize}
+	\subsection{Fehlende Attribute}
+	\begin{itemize}
+		\item Situation: Fragenbögen sind unvollständig
+		\item Lösung 1: Weise den häufigsten Wert alle Instanzen im aktuellen Knoten zu
+		\item Lösung 2: erzeuge virtuelle Punkte, für jeden möglichen attributwert einen, jeder Pu nkt erhält ein Gewicht entsprechend der Häufigkeit des Wertes, Führe für alle virtuellen Punkte die weitere Klassifikation durch; bestimme die endgültige Klasse durch Abstimmung unter den q Punkten
+		\item Während der Konsturktion des Baumes: so tun als wäre der Punkt nicht vorhanden
+	\end{itemize}
+	\subsection{Bewertung}
+	\begin{itemize}
+		\item Umgang mit unterschiedlichen Skalenniveaus
+		\item Fehlerbehaftete Daten, fehlende Daten, viele Attribute
+		\item nichtlineare Entscheidungsgrenzens
 	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
