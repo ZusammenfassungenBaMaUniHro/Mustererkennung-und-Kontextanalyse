@@ -62,72 +62,108 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 	\end{description}
 	Für weitere Informationen sind folgende Referenzen zu konsultieren: \cite[S. 3-16]{dudaPattern}
 \section{Grundlagen Signalverarbeitung}
-	In diesem Abschnitt werden die Grundlagen der digitalen Signalverarbeitung beschrieben. In der digitalen Signalverarbeitung werden Methoden und Techniken behandelt welche aus  anlogen Sensorwerten eine digitale Information erstellen.
 	\subsection{Digitalisierung}
-		Die gemessenen Werte der Sensoren werden durch unterschiedliche Ausgangsspannungen realisiert d.h. in Abhängigkeit von der gemessenen Größe ändert sich die gemessene Spannung am Ausgang des Sensors.\\
-		Diese analogen Signale werden im ersten Schritt zeitlich diskretisiert d.h. die kontinuierlichen Signale werden durch Abtastung angenähert. Unter Abtastung versteht man die Erhebung eines Wertes zu einem Zeitpunkt. Die Häufigkeit der Abtastung wird in Herz (Hz) angegeben d.h. Abtastung mit 10 Hz entspricht 10 maliges abtasten des analogen Signales innerhalb von einer Sekunde. Durch diesen Schritt erhalten wir eine Folge von gemessenen Spannungen.\\
-		Im nächsten Schritt werden die abgetasteten Werte diskretisiert (Diskretisierung der Amplituden) d.h. jeder Spannung wird ein digitaler Wert zugewiesen. Dies geschieht mittels einem A/D-Wandler, welcher entsprechend von Grenzwerten (1/2 Spannung, 1/4 Spannung, 1/8 Spannung) entsprechende Bits setzt und diese Information ausgibt.
-		\subsubsection{Dithering}
-		Ein Problem bei der Diskretisierung der Amplitude ergibt sich dadurch, dass bei einem sehr geringen Sensorwert das LSB nicht gesetzt wird. Dies hat zur Folge das Informationen verloren gehen. Um dies zu verhindern wird Zufallsrauschen auf den aktuellen Sensorwert addiert. Dadurch wird der Grenzwert manchmal überschritten. So nährt sich der Erwartungswert den Realwert an.
-		\subsubsection{Abtastung}
-
-			Ein Signal nur dann kann korrekt abgetastet werden, wenn es keine
-			Frequenzanteile enthält, die oberhalb der halben Abtastrate liegen. (Abtasttheorem)\\
-			$f_{max} \leq \frac{1}{2}f_{sample}$\\
-		Aus dem Abtasttheorem folgt: Wenn wir ein Signal mit $f_{max}$ korrekt abzutasten wollen, müssen wir dieses Signal mit einer Frequenz von $2*f_{max}$ abtasten. 
+	\begin{itemize}
+		\item Sensordaten liefern kontinuierliche Daten in der Regel Spannungswerte
+		\item das Signal wird gesampelt d.h. zeitlich diskretisiert indem in regelmäßigen ein Wert gemessen wirds
+		\item gesampelte Signal wird in der Amplituide diskretisiert (Analog-Digital-Converter) d.h. liefert anschließend ein digitalen Wert
+		\item ADC setzt Bits entsprechend des Eingangssignals  (1/2 Spannung, 1/4 Spannung)
+		\item Problem: LSB im ADC wird nicht gesetzt wenn Wert nur gering Schwankt d.h. es gehen Informationen verloren
+		\item Lösung: Dithering (Addierung von Noise so wird Grenzwert manchmal überschritten und Erwartungswert nährt sich realen Wsert an)
+		\item Wie ist die Abtastrate zu setzen um den korrekten Wert aus den Originalsignalen zu erhalten?
+		\item Antwort: Abtasttheorem \glqq Ein Signal nur dann kann korrekt abgetastet werden, wenn es keine Frequenzanteile enthält die oberhalb der halben Abstastrate liegen.\grqq $f_{max} \leq \frac{1}{2} f_{sample}$
+	\end{itemize}
 	\subsection{Lineare Systeme}
-		Ein lineares System erfüllt folgende Eigenschaften:
-		\begin{description}
-			\item[Homogenität] $f(c*a) = c*f(a)$ d.h eine Veränderung des Input-Signales hat eine identische Änderung des Output-Signals zu folge
-			\item[Additivität] $f(a+b) = f(a)+f(b)$ d.h wenn das Input-Signal aus zwei überlagerten Signalen besteht können wir diese getrennt Auswerten und anschließend die Ergebnisse addieren
-			\item[Translationsinvarianz] $f(n) = y(n) \rightarrow f(n+s) = y(n+s)$ d.h. ein zeitlicher Versatz des Input-Signals hat den selben zeitlichen Versatz im Output-Signal zur Folge
-			\item[Kommutativität] $f(a) = b, g(b) = c \rightarrow g(a)=b, f(b) = c$ d.h. wenn mehrere lineare Systeme in einer Reihe verknüpft sind, können diese vertauscht werden ohne das Ergebnis zu beeinflussen
-		\end{description}
-		Aus diesen Eigenschaften folgt: Ein lineares System ist vollständig durch seine Impulsantwort charakterisiert. Eine Impulsantwort erhalten wir durch Eingabe eines Signals, welches genau an einer Stelle einen Wert größer als 0 hat (Deltafunktion). Die daraus resultierende Antwort beinhaltet alle Eigenschaften des linearen Systemes d.h. unter Verwendung der o.g. Eigenschaften können wir nachfolgend auf Basis der Impulsantwort ermitteln, welches Ergebnis aus anderen Input-Signalen resultiert.
-		\subsubsection{Überlagerung}
-
-		Aus den Eigenschaften des linearen Systems folgt: $f(x) = f(x_1+x_2+x_3) = f(x_1)+f(x_2)+f(x_3)$ d.h. wir können das Eingangssignal zerlegen (Decomposition) und die zerlegten Signale wieder zusammenführen (Synthese), ohne dass das Ergebnis der Analyse beeinflusst wird.\\
-		Diese Überlegung können wir nutzen um das Eingangssignal in mehrere Deltafunktionen zu zerlegen. Anschließend werden diese analysiert und die Teilergebnisse zusammengefasst. Auf diese Weise wird das Ergebnis aus dem Eingangssignal zu ermitteln.\\
-		Des Weiteren ist auch eine Zerlegung das Signal in mehrere Cosinus- und Sinus-Signale interessant(siehe \label{sec-Fourier}).
-		\subsubsection{Faltung}
-		Um die Faltung zu berechnen benötigen wir ein Eingangssignal und die Impulsantwort des Systemes.\\
-		Die Grundidee besteht darin, dass wir das Eingangssignal in einzelne Delta-Impulse zerlegen. Für jeden dieser Delta-Impulse wird die entsprechende verschobene und skalierte Kopie der Impulsantwort berechnet. Anschließend werden alle Impulsantworten addiert.\\
-		Hierfür ergibt sich somit folgende Formel: $y[i] = \sum_{j=1}^{M}h[j]*x[i-j]$ mit $h$ ist Impulsantwort und $x$ das Eingangssignal.\\
-		Durch eine geeignete Wahl der Impulsantwort können Filter, Ableitungen und Integrale realisiert werden. Im nächsten Abschnitt wird ein Verfahren beschrieben, welches die Faltung nutzt um eine Korrelation zu berechnen.
-		\subsubsection{Korrelation}
-		Das Ziel in der Korrelation ist die Erkennung eines bekannten Signales $t$ innerhalb eines verrauchten Signales $x$.\\
-		Für die Berechnung der Korrelation nutzen wir die Faltung mit der gespiegelten Impulsantwort $y[n] =x[n]*t[-n]$. Als Ergebnis dieser Faltung erhalten wir ein Ausgangssignal $y$, welches signifikate Ausschläge im übereinstimmenden Bereich hat.
-		\subsection{Fourier-Transformation}
-		\subsubsection{Allgemein}
-		Mittels einer Fourier-Transformation können wir unser Eingangssignal in eine Summe von Sinus- und Kosinus-Funktionen zerlegen.\\
-		Hierfür müssen folgende Bedingungen gelten (Dirichlet-Bedingungen):
-		\begin{enumerate}
+	\begin{itemize}
+		\item f ist linear gdw: $f(c*(a+b)) = c*(f(a) + f(b))$
+		\item Homogenität: $f(c*a) = c*f(a)$ d.h. eine Veränderung des Input-Signales hat die selbe Auswirkung auf das Output-Signal
+		\item Additivität: $f(a+b) = f(a) + f(b)$ d.h wenn das Input-Signal aus meheren Signalen zusammen gesetzt ist können wir diese einzelnt betrachten und addieren
+		\item Translationsinvarianz: $f(n) =  n \rightarrow f(n+s) = f(n)+s$ d.h. das Output-Signal ist invariant zum zeitlichen Verschub
+		\item Kommutativität: $f(h(a))) = h(f(a))$ d.h. in einem zusammengesetzen System können die Bestandteile umgedreht werden
+		\item ein lineares System ist vollständig durch seine Impulsantwort charakterisiert
+		\item Impulsantwort erhalten wird durch Eingabe eines Signals welcher genau an einer Stelle den Wert 1 hat (Delta-Funktion), die Antwort beschreibt das gesamte Verhalten des Systems
+		\item in einem linearen System können Signale zerlegt werden und analysiert werden ohne das Ergebnis zu beeinflussen $f(x) = f(x_1+x_2+x_3) = f(x_1)+f(x_2)+f(x_3)$
+		\item ein Input-Signal kann also durch mehere Delta-Funktionen beschrieben werden, jede Delta-Funktion ausgewertet werden und die Ergebnisse wieder addiert werden ohne dass das Ergebnis verfälscht wird
+		\item Ist die Eingabe ein sinusförmiges Signal dann ist auch die Ausgabe ein sinusförmiges Signal mit der gleichen Frequenz
+	\end{itemize}
+	\subsection{Faltung}
+	\begin{itemize}
+		\item $x \star h$ (x gefaltet an hs)
+		\item zerlege $x[n]$ in $\delta$-Impulse, Erzeuge für jeden $\delta$-Impuls eine entsprechend verschobene und skalierte Kopie der Impulsantwort, Erzeuge Augangssignal durch summierten dieser Impulsantworten
+		\item Faltung ist kommutativ: $x[n] \star h[n] = h[n] \star x[n]$
+		\item Berechnung der Faltung: $y[i] = \sum_{j=1}^{M}h[j]*x[i-j]$
+		\item Eigenschaften:
+		\begin{itemize}
+			\item Kommutativität: $a[n] \star b[n] = b[n]\star a[n]$
+			\item Assoziativität: $(a[n]\star b[n]) \star c[n] = a[n] \star (b[n]\star c[n])$
+			\item Distributivität: $(a[n]\star b[n]) + (a[n]\star c[n] ) = a[n]\star(b[n]+c[n])$ 
+			\item Transferenz: $f(x[n]\star h[n]) = f(x[n])\star h[n]$
+			\item Zentraler Grenzwertsatz: $x \star x \star \dots \star x \rightarrow N$
+		\end{itemize}
+	\end{itemize}
+	\subsection{Korrelation}
+	\begin{itemize}
+		\item Korrelation $=$ Faltung mit der gespiegelten Impulsantwort (Target)
+		\item $y[n] = x[n] \star t[-n]$ misst die Ähnlichkeit des Signals mit dem Target an allen Stellen des Signals
+		\item Kreuzkorrelation $=$ Ergebnis der Korrelation zweier Signale
+		\item Autokorrelation $=$ Korrelation eines Signals mit sich selbst
+		\item Korrelation ist die optimale Methode zur Detektion eines bekannten Signals in Zufallsrauschen
+	\end{itemize}
+	\subsection{Diskrete Fourier-Transformation}
+	\begin{itemize}
+		\item jede peripdosche Funktion lässt sich als Summe von Sinus und Kosinusfunktionen darstellen
+		\item Vorraussetzungen (Dirichlet-Bedingungen)
+		\begin{itemize}
 			\item Anzahl der Unstetigkeiten innerhalb einer Periode ist endlich
 			\item Anzahl der Maxima und Minima innerhalb einer Periode ist endlich
-			\item Funktion ist in jeder Periode integrierbar (d.h. die Fläche unter dem Betrag der Funktion ist in jeder Periode endlich)
-		\end{enumerate}
-		Die Sinus- und Kosinus-Funktionen werden auch Basisfunktionen genannt und bilden einen Vektorraum.
-		\subsubsection{Fourier-Transformation Grundideen}
-		Nachfolgend werden die Grundideen der Fourier-Transformationen erläutert.\\
-		Die Ausgangsidee ist dass jedes Signal durch eine Summe von phasenverschobenen Kosinus-Funktionen beschreiben werden kann. Wir sprechen von einer Phasenverschiebung falls zwei Kosinus-Funktionen unterschiedliche Nullstellen haben (d.h. eine Verschiebung auf der x-Achse). Hierfür ergibt sich folgende Formel: $s[i] = \sum_{k=0}^{N/2} M_{k}*cos(2*\pi*k*i/N+\phi_{k})$ wobei $i = 0,\dots,N-1$, $M_{k}$.\\
-		Die zweite Idee ist dass jede phasenverschobene Kosinus-Funktion $M*cos(x+\phi)$ kann durch eine Summe von Kosinus- und Sinus-Funktion ohne Phasenverschiebung repräsentiert werden: $M*cos(x+\phi) = A*cos(x) + B*sin(x)$ mit $A=M*cos(\phi)$ und $B=M*sin(\phi)$ wobei $M$ ist die Amplitude und $\phi$ die Phasenverschiebung. Dies erhalten wir durch den Übergang von Kartesischen-Koordinaten in Polar-Koordinaten in der komplexen Zahlenebene. Dadurch bestehen die  Polarkoordinaten  aus einen Imaginär und einen Realteil.\\
-		Da wir uns im diskreten Bereich befinden gilt folgende Eigenschaft: Das Signal aus N Werten ist ein N-dimensionaler Vektor. Wie vorher beschrieben bilden die gesuchten Basisfunktionen einen Vektorraum. Für einen N-dimensionalen Vektorraum benötigen wir also eine Basis mit N orthogonalen Vektoren (d.h. das Skalarprodukt zweier Basis-Vektoren muss 0 sein).\\
-		Die diskreten Sinus und Kosinus-Funktionen $c_{k}[i] = sin(2*\pi*k*i/N)$ bzw. $c_{k}[i] = cos(2*\pi*k*i/N)$ sind alle zueinander orthogonal. Da die Summe von 0 bis $N/2$ läuft erhalten wir genau $N/2+1$ phasenverschobene Kosinus-Funktionen, welche jeweils in eine Sinus und eine Kosinus Funktion zerlegt wird. Somit erhalten wir $2*(N/2+1) = N+2$ Basisfunktionen. Da $s_{0} = sin(0)$ und $s_{N/2} = sin(2*pi*N/2*i/N) = sin(\pi*i)$ jeweils Nullvektoren sind, können diese Verworfen werden wodurch wir $N$ Basisfunktionen erhalten.\\
-		Unter einer diskreten Fourier-Transformation verstehen wir die Transformation des Signalsvektors in ihre Sinus- und Kosinus-Basis.
-		\subsubsection{Diskrete Fourier-Transformation}
-		Man unterscheidet bei der diskreten Fourier-Transformation zwischen der Zeit-Domäne und der Frequenz-Domäne. Der Übergang von der Zeit-Domäne in die Frequenz-Domäne wird Diskrete-Fourier-Transformation (DFT) genannt. Der rückwärtige Übergang wird Invers-Diskrete-Fourier-Transformation (IDFT) genannt.\\
-		Die Zeit-Domäne $x[]$ besteht aus N-Samples, welche von 0 bis N-1 nummeriert sind. Die Frequenz-Domäne beinhaltet die durch die DFT erhaltenen Real- $ReX[]$ und Imaginär-Teile $ImX[]$, welche jeweils aus $N/2+1$ Elementen besteht. Die Real-Teile beschreiben Amplituden der Kosinus-Wellen, wobei die Imaginär-Teile die Amplituden der Sinus-Wellen bechreiben.\\
-		Die Basisfunktionen d.h. die Funktionen die ein Signal x zerlegen:
-			$$c_{k}[i]=cos(2*\pi*k*i/N)$$
-			$$s_{k}[i]=sub(2*\pi*k*i/N)$$
-		wobei k die Wellenzahl ist. $c_{k}$ bzw. $s_{k}$ ist das Signal der Kosinus- bzw. Sinusfunktion die mit der Amplitude in der Fourierzerlegung auftritt. Alle Basisfunktionen müssen genau so lang wie das Signal sein. Der Parameter $k$ gibt die Anzahl der Zyklen innerhalb der Signallänge an. $c_{0} = Re[0]$ ist der Gleichstrom-Versatz (DC-Offset). $s_{0} = Im[0]$ und $s_{N/2} = Im{N/2}$ sind überall 0, also irrelevant für die gesuchte Basis.\\
-		Bisher wissen wir welche Basisfunktionen in dem Signal enthalten seien können. Jedoch fehlt uns der Anteil der Basisfunktion in dem Ausgangssignal d.h. uns fehlt noch die konkrete Berechnung der Real- bzw. Imaginar-Teile (Amplituden der Sinus- bzw. Kosinus-Funktionen). Bevor wir uns damit befassen ist noch eine Vorüberlegung notwendig.\\
-		Da wir wissen wollen wie ähnlich unser Eingangssignal zu unser Basis ist berechnen wir nachfolgend die Korrelation. Die allgemeine Formel ergibt sich wie folgt:
-		$$ \sum_{i=0}^{N-1} x[i]*y[i]$$ mit $x$ als Eingangssignal und $y$ unsere Basis.\\
-		Ausgehend von dieser Beobachtung und unseren vorher ermittelten Basisfunktionen ergeben sich nachfolgend die Formeln für die Amplituden:
-		$$ReX[k] =\sum_{i=0}^{N-1} x[i]*cos(2*\pi*k*i/N) $$ bzw. $$ImX[k] =\sum_{i=0}^{N-1} x[i]*sin(2*\pi*k*i/N) $$ für $k = 0,\dots,N/2$.
-		\subsection{TODO}
-		
+			\item Funktion ist in jeder Periode integrierbar (d.h. die Fläche unter dem Betrag der Fnktion ist in jeder Periode endlichs)
+		\end{itemize}
+		\item die Basisfunktionen der Fouriertransformation sind orthogonal, bilden also die Basis eines Vektorraums
+		\item Idee: jedes Signal kann als Summe von phasenverschobenen Cosinus-Wellen repräsentiert werden: $s[i] = \sum_{k=0}^{N/2} M_k cos(2\pi*k*i/N+\phi_k), i = 0,\dots,N-1$
+		\item jedes phasenverschobene Cosinus-Funktion $M cos(x+\phi)$ kann durch Summe von Cosinus und Sinusfunktion ohne Phasenverschiebung repräsentiert werden: $M*cos(x+\phi) = A cos(x)+B sin(x)$ wobei $A = M*cos \phi, B = M*sin \phi$
+		\item Signal mit N Werten ein N-dimensionaler Vektore
+		\item N-dimensionaler Vektorraum benötigt man eine Basis von N orthogonalen Vektor (Skalarprodukt zweier Basisvektoren muss verschwinden)
+		\item Diskrete Cosinus und Sinusfunktionen $c_k[i] = cos(2\pi*k*i/N)$ und $s_m[i] = sin(2*\pi*m*i/N)$ sind orthogonal
+		\item die $N+2$ diskreten Sinus und Kosinusfunktionen $c_k,s_k; k = 0,\dots,N/2$ bilden N-dimensionale Basis da $s_0$ und $s_{N/2}$ sind Nullvektoren und nicht in der Basis
+		\item Zeitbreich beschreibt das Input-Signal
+		\item Frequenzbereich beinhaltet die Real(Kosinus) und Imaginärteile(Sinus) des Inputsignals
+		\item Basisfunktionen:
+		\begin{itemize}
+			\item Kosnius: $c_k[i] = cos(2*\pi*k*i/N)$	
+			\item Sinus: $s_k[i] = sin(2*\pi*k*i/N)$			
+			\item k ist die Wellenanzahl, gibt an wie viel Zyklen innerhalb der Signallänge enthalten sind
+			\item $c_k$ ist das Signal der Cosinusfunktionen die mit der Amplitude $Re[k]$ in der Fourierzerlegung auftreten,
+			\item $s_k$ ... $Im[k]$ 
+		\end{itemize}
+		\item $c_0 = Re[0]$ ist der Gleichstromanteil
+		\item $s_0$ und $s_{N/2}$ sind null
+		\item Idee: Berechnung der Ähnlichkeit zweier Signale (Korreleation) $\sum_{i=0}^{N-1}x[i]*y[i]$
+		\item Anwendung der Idee auf unsere $c_k[i]$ bzw. $s_k[i]$
+		\item $ReX[k] = \sum_{i=0}^{N-1}x[i]*cos(2*\pi*k*i/N)$ analog für $ImX[k]$ nur halt mit Sinus; $k = 0,\dots,N/2$
+		\item es gilt: $A*cos(x)+B*sin(x) = M*cos(x+\phi)$
+		\item Übergang in Polarkoordinaten:
+		\begin{itemize}
+			\item Magnitude: $\sqrt{ReX[k]^2+ImX[k]^2}$
+			\item Phase: $arctan(\frac{ImX[k]}{ReX[k]})$
+			\item Vorteil: besser Verständlich für den Menschen um Charakteristiken zu verstehen
+		\end{itemize}
+		\item Rekonsuktion des Signals aus $ReX,ImX$: $x[i] = \sum_{k=0}^{n/2}(Re\hat{X}[k]*cos(2*\pi*k*i*/N))+\sum_{k=0}^{n/2}(Im\hat{X}[k]*sin(2*\pi*k*i*/N))$ mit 
+		\begin{itemize}
+			\item $Re\hat{X}[k] = \frac{ReX[k]}{N/2}$ für $ 0 < k <N/2$
+			\item $Im\hat{X}[k] = \frac{ImX[k]}{N/2}$
+			\item $Re\hat{X}[0] = \frac{ReX[0]}{N}$
+			\item $Re\hat{X}[N/2] = \frac{ReX[N/2]}{N}$
+		\end{itemize}
+		\item DFT ist linear: $F(c*f(t)) = c*F(f(t))$ und $F(f(t)+g(t)) = F(f(t))+F(g(t))$
+		\item Faltungssatz: $F(x\star y)= F(x)*F(y)$ d.h. Faltung im Zeitbereich entspricht einer Multiplikation im Frequenzbereich
+		\item dual: $F(x*y) = F(x)\star F(y)$
+	\end{itemize}
+	\subsection{Anwendung}
+	\begin{itemize}
+		\item Spektralanalyse
+		\item nicht Spektrum des Gesamtsignals von Interesse sondern die Kurzzeitsprektren von Signalausschnitten
+		\item Ansatz: Stanze nacheinander Fenster aus den Signalen und berechne jeweils das Sprektrum für ein solches Fensters, resultierendes Spektrum des Fensters repräsentziert die Frequenzverteilung zu dem Zeitintervall dass das Fenster überdeckt
+	\end{itemize}
 \section{Merkmale}
 	\subsection{Statistische Merkmale}
 		\subsubsection{Erwartungswert}
