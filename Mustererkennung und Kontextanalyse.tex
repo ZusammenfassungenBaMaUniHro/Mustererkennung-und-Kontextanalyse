@@ -932,7 +932,91 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 	\begin{itemize}
 		\item Umgang mit unterschiedlichen Skalenniveaus
 		\item Fehlerbehaftete Daten, fehlende Daten, viele Attribute
-		\item nichtlineare Entscheidungsgrenzens
+		\item nichtlineare Entscheidungsgrenzen
+	\end{itemize}
+\section{Algorithmenunabhängige Verfahren}
+	\subsection{Der beste Klassifikator}
+	\begin{itemize}
+		\item Gegeben Klassen $\Omega$ und Merkmalsraum $X$
+		\item Menge der möglichen Werlten wird durch Funktion $P(\omega|x)$ beschrieben die angibt wie wahrscheinlich es ist einer gegebene Welt dass x der Klasse $\omega$ angehört
+		\item Ziel des Klassifikators: diese Funktion (die posteriori Wahrscheinlich) aus einer Menge von Traningsdaten rekonstruieren
+		\item bester Klassifikator ist derjenige Klassifikator der für alle denkbaren Funktionen $P(\omega|x)$ einen geringeren Klassifikationsfehler liefert als jeder andere
+		\item Was müssen wir machen damit wir überhaupt Aussage über die Form von $P(\omega|x)$ machen können?
+		\item benötigen Annahmen über wie wir sich die unbekannte Funktion von bekannten Werten in unbekannten Regionen extrapolieren lässt
+		\item Annahmen bedeutet einfach dass wir unterstellen dass bestimmte Formen der Funktion $P(\omega|x)$ wahrscheinlicher sind als andere
+		\item Wenn $P(\omega|x)$ beliebige Funktion sein kann was folgt?
+		\item falls $P(\omega|x)$ nicht zur Annahme passt kann der Klassifikator damit nicht gut zurechtkommen
+		\item für die jenigen P deren Form gut zur Annahme des Klassifikators passen liefert er Ergebnisse die besser sind als bloßes Raten
+		\item diejenigen P deren Form der Annahme widerspricht liefert er Ergebnisse die schlechter sind als Raten
+		\item Also Das, was ein Klassifikator durch seine Annahme gegenüber bloßem Raten in einem Bereich des Raums der Funktionen P gewinnt, verliert er notwendigerweise in einem anderen Bereich dieses Raums.
+		\item Gemittelt über alle P ist jeder Klassifikator so gut wie raten d.h. jeder Klassifikator ist gleich gut
+		\item No Free Lunch Theorem: \glqq Gemittelt über alle möglichen Funktionen P haben alle Klassifikatoren die
+		gleiche Leistung bei der Klassifikation neuer Daten. \grqq d.h. es gibt keinen besten Klassifikator der immer passt
+	\end{itemize}
+	\subsection{Evaluierung von Klassifikatoren}
+	\begin{itemize}
+		\item Test auf Trainingsdaten nicht aussagefähig da Klassifikator kann auswendig lernen
+		\item bei genügend Daten können wir Aufteilen in zwei Mengen: Test- und Evaluations-Daten
+		\item Parameter der Klassifikatoren benötigen wir ebenfalls ein Teil der Daten $\rightarrow$ Validierungsdaten
+		\item Also Aufteilung der Gesamtdaten in 3 Teile: Trainingsdaten (50\%), Validierungsdaten (25\%), Testdaten(25\%)
+		\item Leistungskriterium ist die Fehlerrate bei den Testdaten (Anteil korrekt klassifizierter Instanzen).
+		\item Wichtig: Testdaten nicht für Training oder Validierung verwenden!!!
+		\item Typisch: Traning bis Validierungsleistung wieder schlechter wird, anschließend Leistungsschätzung mit Testdaten
+		\item nach der Auswahl des besten Klassifikators: Training auf allen Daten
+		\item Also: je größer Menge der Trainingsdaten desto besser der Klassifikator, je größer die Menge der Testdaten desto bessere Fehlerschätzung
+		\item Problem: viele Daten
+		\item Lösung: Kreuzvalidierung, Bootstrap
+	\end{itemize}
+	\subsection{Schätzung des Fehlers}
+	\begin{itemize}
+		\item Gegeben Fehlerrate von 25\% wie sicher ist es dass dies die tatsächliche Fehlerrate ist?
+		\item Annahme: Klassifikator liefert mit Wahrscheinlichkeit p das richtige Ergebnis
+		\item Test mit $N=1000$ hat also $S=750$ korrekte Klassifikationen also Erfolgsrate von $75\%$, wie sicher ist das Ergebniss?
+		\item Betrachtung als Sequenz von 1000 Bernulli-Expiermente die mit Wahrscheinlichkeit von p Erfolg liefern: Mittelwert und Varianz für Bernoulli-Expiment sind p bzw. p(1-p)
+		\item für Folge von N Experimente ist die emprische Erfolgsrate $f=S/N$ eine Zufallsvariable mit dem Erwartungswert p und der Varianz $p(1-p)/N$
+		\item für große N ist f annhährend Normalverteilt mit Mittelwert p
+		\item Frage: Wie gross ist das Intervall in dem p mit einer Sicherheit von z.B $80\%$ liegt?
+		\item Konfidenzintervall für p: $z = \frac{f-p}{p*(1-p)*N}$ dies ist nun $N(0,1)$ verteilt
+		\item man Erhält die Gleichung: $P(-b\leq z \leq b) = 80\%$
+		\item Intervallgrenzen b kann man für die Normalverteilung nachschlagen, insgesamt quadratische Gleichung da p auflösen
+		\item Approximation durch Normalverteilung aber nur für große N (N $>$ 100)
+	\end{itemize}
+	\subsection{Kreuzvalidierung}
+	\begin{itemize}
+		\item wenn nicht genügend Daten können auch mehere Tests durchgeführt werden und der Durchschnittsfehler angegeben werden
+		\item k-fache Kreuzvalidierung werden die Daten zufällig in k Teilmengen zerlegt (oft stratifizierte Teilmengen für geringere Varianz d.h. der relative Klassenanteil ist gleich)
+		\item k Läufe $i = 1,\dots,k$ bei denen Teilmenge i als Testdaten verwendet wird und der Rest als Trainingsdaten
+		\item üblich: k=10
+		\item Leave-one-out Kreuzvalidierung: N-fache Kreuzvalidierung
+		\begin{itemize}
+			\item Verwendet nahezu alle Daten als Trainingsdaten
+			\item Beinhaltet keinen Zufall bei dem Aufbau der Teilmengen (keine Varianz)
+			\item rechenintensiv
+			\item garantiert nicht stratifizierte Testdaten
+			\item Bsp: Feature Zufallszahlen, Klassen Hälfte 1 andere 0ß
+			\item Bester Klassifikator: Entscheidung für die häufigste Klassen
+			\item Leave-One-Out hat 100\% Fehler da ausgelassenes Datum dafür sorgt das die gegensätzliche Klasse mehrheitlich vorhanden ist 
+		\end{itemize}
+	\end{itemize}
+	\subsection{Bootstrap}
+	\begin{itemize}
+		\item Kreuzvalidierung: Stichprobe ohne zurücklegen
+		\item Bootstrap: Stichprobe mit zurücklegen d.h. Datum kann mehrfach gezogen werden
+		\item Alle nicht in Bootstrap-Probe enthaltene Daten als Trainingsdaten benutzen
+		\item Speziell: 632-Bootstrap
+		\begin{itemize}
+			\item Chance: n-Elementige Menge bei n Auswahlvorgängen nicht gewähtlt zu werden: $(1-\frac{1}{n})^n \approx 0.368$ d.h eine Bootstrap Stichprobe der Größe n enthält eta $63.2\%$ der insgesamt verfügbaren Instanzen
+			\item Problem: Fehlerschätzung konservativ da bei Kreuzvalidierung mit k=10 $90\%$ der Trainingsdaten zur Verfügung stehen
+			\item realisitische Fehlerschätzung: pessimistische Schätzung mit der optimistischen Schätzung kombinieren: $error = 0.632*error_{test}+0.368*error_{training}$
+		\end{itemize}
+	\end{itemize}
+	\subsection{Vergleich von Klassifikatoren}
+	\begin{itemize}
+		\item Statistische Test um zu klären ob ein Klassifikator signifikant besser ist als der andere
+		\item Klassisch: Hypothesentest (t-Test)
+		\item gegeben: k Paare von Fehlerraten $(x_1,y_1),\dots,(x_k,y_k)$ für Klassifikatoren X und Y
+		\item Erstellung der Paare durch ermittelung der Fehlerrate auf den gleichen Problemen (10-fache Kreuzvalidierung, jeder Klassifikator kriegen die gleichen Daten)
+		\item für diesen Fall genügt die Betrachtung der Differenzen $d_i = x_i-y_i$ und die Frage: Differenzen signifikant unterschiedlich von 0 $\rightarrow$ ein-Sample t-Test
 	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
