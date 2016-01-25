@@ -1017,6 +1017,51 @@ Macht euch eigene Notizen oder ergänzt/korrigiert meine Ausführungen!
 		\item gegeben: k Paare von Fehlerraten $(x_1,y_1),\dots,(x_k,y_k)$ für Klassifikatoren X und Y
 		\item Erstellung der Paare durch ermittelung der Fehlerrate auf den gleichen Problemen (10-fache Kreuzvalidierung, jeder Klassifikator kriegen die gleichen Daten)
 		\item für diesen Fall genügt die Betrachtung der Differenzen $d_i = x_i-y_i$ und die Frage: Differenzen signifikant unterschiedlich von 0 $\rightarrow$ ein-Sample t-Test
+		\item Maximum Likelihood
+		\begin{itemize}
+			\item gegeben Menge von Klassifikatoren $h_i$(Hypothesen); eine Auswahloption ist die a-postieriori-Wahrscheinlichkeit zu verwenden die der Klassifikator unter den Trainingsdaten besitzt
+			\item also: $P(h_i|D) = \frac{P(D|h_i)*P(h_i)}{P((Ds))} \propto P(D|h_i)*P(h_i)$
+			\item a-priori von der $h_i$ häufig nur schwer anzugeben deshalb Kriterium: $h_{opt} = argmax_{h_i} P(D|h_i)$
+			\item berechnen also die Klassifikatoren und wählen danach denjenigen der die Likelihood der Trainingsdaten maximierts
+			\item Umformung von $h_{opt}$ nach: $h_{opt} = argmin_{h_i}[-log_2 P(D|h_i)-log_2 P(h_i)]$ (Minimum Description Length vgl. Informationsentropie von Bäumen)
+			\item Interpretation: $-log_2 P(D|h_i)-log_2 P(h_i)$ Menge von Bits die benötigt werden um den Klassifikator $h_i$ zu beschreiben und die Zusatzinformationen die benötigt werden um mit dem Klassifikator die Trainingsdaten zu rekonstruieren
+			\item bester Klassifikator: der die wenigstens Bits benötigt um insgesamt die Daten zu beschreiben (Mass für Komplexitäts)
+			\item Praktisch: bestimung von $P(h_i)$ nicht trivial
+			\item Prinzip: Ockhams Rasiermesser: Bestrafung von zu komplexen Modellen, bevorzugung von einfachen Modellen
+		\end{itemize}
+	\end{itemize}
+	\subsection{Kombination von Klassifikatoren}
+	\begin{itemize}
+		\item Idee: Kombination von mehreren Klassifikatoren (Expertenrunde)
+		\item Vorteil: verbessert oft die Vorhersagequalität
+		\item Nachteil: Nicht immer einfach zu interpretierens
+		\item Bagging
+		\begin{itemize}
+			\item Trainiere k Klassifikatoren für k Bootstrap-Samples der Größe n
+			\item jeder hat eine Stimme
+			\item Klassifiziere neue Daten durch Abstimmung
+			\item Vorteil: bei unstabilen Lernverfahren (Struktur ändert sich stark bei leichten Änderungen an den Daten)
+			\item Bootstrap-Sampling: Ensemble von Klassifikatoren erzeugt, das das Spektrum aller Strukturen beinhaltet die zu den Daten passen
+			\item Bias-Variace-Dekombination: Angenommen wir hätten $\infty$ Klassifikatoren die wir mit n Trainingsdatensätzen tranieren und klassifizieren durch Abstimmung. Wie groß ist der Fehler?
+			\item Fehler ist Bias (Verzerrung) des Klassifikationsschemas selbst die nicht vom spezifischen Trainingsdatensatz abhängt
+			\item Gesamtfehler Summe von Bias und Varianz (Fehler durch Datensatz); Fehler = Bias + Varianz (je geringer die Verzerrung desto mehr Parameter hat der Klassifikator desto höher die Varianz)
+			\item Bagging reduziert die Varianz durch eine Abstimmung bzw. Mittelwertbildungs
+		\end{itemize}
+		\item Bootsting
+		\begin{itemize}
+			\item Idee: gewichtete Kombination von Klassifikatoren
+			\item Gewichtung gemäß der Leistung
+			\item Iterativ: Training neuer Klassifikatoren wird von der Leistung der breits trainierten Klasifikatoren beinflusst
+			\item neue Klassifikatoren werden dazu ermutigt Experten für die Klassifikation von Instanzen zu werden die von den bisherigen Klassifikatoren nicht Richtig klassifiziert werden
+			\item Klassifikatoren sollten Experten sein die sich gegensteitg ergänzens
+			\item Bsp: Adaboost
+		\end{itemize}
+		\item Stacking
+		\begin{itemize}
+			\item Stapeln von Klassifikatoren
+			\item Basisklassifikatoren liefern Wahrscheinlichkeiten
+			\item höhere Ebenen können diese als Features nutzen
+		\end{itemize}
 	\end{itemize}
 \bibliography{library}
 \bibliographystyle{plain}
